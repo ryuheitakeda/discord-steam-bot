@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Discord × Steam VC Bot — Pick tonight's game, right in voice chat</title>
+<meta name="description" content="A Discord bot that suggests multiplayer-ready Steam games shared by everyone in a voice channel. Link with /link, then run /games or /pick in your VC.">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#top" aria-label="Back to top">
+      <svg class="brand-mark" viewBox="0 0 34 34" role="img" aria-hidden="true">
+        <defs>
+          <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#5865f2"/>
+            <stop offset="1" stop-color="#1b8de0"/>
+          </linearGradient>
+        </defs>
+        <rect width="34" height="34" rx="10" fill="url(#brandGrad)"/>
+        <circle cx="13.5" cy="17" r="3.1" fill="#fff"/>
+        <circle cx="21.5" cy="12.5" r="3.1" fill="#fff" fill-opacity="0.85"/>
+        <circle cx="21.5" cy="21.5" r="3.1" fill="#fff" fill-opacity="0.85"/>
+      </svg>
+      <span class="brand-text">Discord × Steam VC Bot</span>
+    </a>
+    <nav class="nav-links" aria-label="Page sections">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="lang-switch" href="../index.html" hreflang="ja" lang="ja">JA</a>
+      <a class="btn btn-primary btn-sm" href="{{INVITE_URL}}">Add to Discord</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero" id="top">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">Discord Bot · Steam Integration</p>
+        <h1>Decide tonight's game,<br>right inside your voice channel.</h1>
+        <p class="lead">
+          The bot looks at what everyone currently in your VC actually owns on Steam and
+          surfaces the multiplayer-ready titles you all share. No more group chat debates
+          about what to play.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary btn-lg" href="{{INVITE_URL}}">Add to Discord</a>
+          <a class="btn btn-ghost btn-lg" href="#how">See how it works</a>
+        </div>
+        <p class="hero-note">Free to start · no credit card required</p>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="mock-embed">
+          <div class="mock-embed-bar"></div>
+          <p class="mock-embed-title">🎮 Games you can play together today</p>
+          <ol class="mock-embed-list">
+            <li><span class="mock-rank">1</span><span class="mock-name">Left 4 Dead 2</span><span class="mock-meta">312.4h total</span></li>
+            <li><span class="mock-rank">2</span><span class="mock-name">Portal 2</span><span class="mock-meta">58.0h total</span></li>
+            <li><span class="mock-rank">3</span><span class="mock-name">Deep Rock Galactic</span><span class="mock-meta">41.2h total</span></li>
+            <li><span class="mock-rank">4</span><span class="mock-name">It Takes Two</span><span class="mock-meta">12.6h total</span></li>
+          </ol>
+          <p class="mock-embed-footer">Unlinked: none · Unavailable: none</p>
+        </div>
+        <p class="visual-caption">※ Example output of /games</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="section-inner">
+      <div class="section-head">
+        <p class="eyebrow">Features</p>
+        <h2 class="section-title">What it does</h2>
+        <p class="section-lead">No complicated setup. Link your Steam profile once, then just run a command in voice chat.</p>
+      </div>
+      <div class="card-grid cols-4">
+        <div class="card">
+          <div class="card-icon" aria-hidden="true">🔗</div>
+          <h3>Link with <code>/link</code></h3>
+          <p>Paste your Steam profile URL, SteamID64, or custom URL name — that's it, no external login flow. Unlink anytime with <code>/unlink</code>, or check your status with <code>/profile</code>.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon" aria-hidden="true">🎮</div>
+          <h3><code>/games</code> suggests shared titles</h3>
+          <p>Pulls the games shared by every linked member currently in your voice channel, filters for multiplayer-ready titles, and lists up to 10 sorted by recent playtime. Add <code>all:True</code> to see the full unfiltered list.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon" aria-hidden="true">🎲</div>
+          <h3><code>/pick</code> for a single suggestion</h3>
+          <p>Too many options? <code>/pick</code> randomly selects one title from your shared library — for when you don't even have time to discuss.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon" aria-hidden="true">👥</div>
+          <h3>Automatic voice channel detection</h3>
+          <p>No need to specify a channel. The bot detects the voice channel the command author is currently in, and runs as soon as two or more linked members are present.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt" id="how">
+    <div class="section-inner">
+      <div class="section-head">
+        <p class="eyebrow">How it works</p>
+        <h2 class="section-title">Three steps to get started</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num" aria-hidden="true">1</div>
+          <h3>Add to Discord</h3>
+          <p>Add the bot to your server using the button below. That's the whole setup.</p>
+        </div>
+        <div class="step">
+          <div class="step-num" aria-hidden="true">2</div>
+          <h3>Run <code>/link</code></h3>
+          <p>Each member links their Steam profile URL with <code>/link</code>. Make sure "game details" is set to public in your Steam privacy settings.</p>
+        </div>
+        <div class="step">
+          <div class="step-num" aria-hidden="true">3</div>
+          <h3>Run <code>/games</code> in your VC</h3>
+          <p>Once everyone's in the voice channel, run <code>/games</code> (or <code>/pick</code>). Suggestions arrive instantly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="section-inner">
+      <div class="section-head">
+        <p class="eyebrow">Pricing</p>
+        <h2 class="section-title">Plans</h2>
+        <p class="section-lead">Start for free. If your server uses it heavily, upgrade to Premium for unlimited use.</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <p class="price-plan">Free</p>
+          <p class="price-amount">$0</p>
+          <ul class="price-list">
+            <li><code>/games</code> + <code>/pick</code> combined: up to 3 per day and 60 per month, per server</li>
+            <li><code>/link</code>, <code>/unlink</code>, and <code>/profile</code> are unlimited</li>
+            <li>No credit card required to start</li>
+            <li>Limits refill automatically on a rolling window</li>
+          </ul>
+          <a class="btn btn-ghost btn-lg" href="{{INVITE_URL}}">Add for free</a>
+        </div>
+        <div class="price-card is-premium">
+          <span class="price-badge">Recommended</span>
+          <p class="price-plan">Premium</p>
+          <p class="price-amount">¥380<span>/month, per server</span></p>
+          <ul class="price-list">
+            <li>Unlimited <code>/games</code> and <code>/pick</code></li>
+            <li>One subscription covers the whole server — everyone in your VC benefits</li>
+            <li>Secure card payment via Stripe</li>
+            <li>Check your subscription anytime with <code>/premium</code></li>
+          </ul>
+          <a class="btn btn-primary btn-lg" href="{{INVITE_URL}}">Add to Discord & upgrade</a>
+          <p class="price-foot">Subscriptions are managed from inside Discord via the <code>/premium</code> command, after the bot is added to your server.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt" id="faq">
+    <div class="section-inner">
+      <div class="section-head">
+        <p class="eyebrow">FAQ</p>
+        <h2 class="section-title">Frequently asked questions</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>What languages are supported?</summary>
+          <div class="faq-body">Japanese and English. Replies automatically match your Discord client's display language.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Does it work if my Steam profile is private?</summary>
+          <div class="faq-body"><code>/games</code> and <code>/pick</code> need "game details" set to public in your Steam privacy settings to read your library. Members without public game details are excluded from the results and listed in a footer note.</div>
+        </details>
+        <details class="faq-item">
+          <summary>How many people need to be in the VC?</summary>
+          <div class="faq-body">At least two linked members with a readable game library need to be present in the voice channel. It won't run with only one member, or if nobody has linked their account.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What happens when the free limit is reached?</summary>
+          <div class="faq-body">Each server gets up to 3 uses per day and 60 per month (combined for <code>/games</code> and <code>/pick</code>). Both limits refill automatically as time passes on a rolling window. Upgrading to Premium removes the limit immediately.</div>
+        </details>
+        <details class="faq-item">
+          <summary>How does billing and cancellation work?</summary>
+          <div class="faq-body">Premium is billed via Stripe by credit card. Check your subscription status anytime with <code>/premium</code>, and cancel from there as well.</div>
+        </details>
+        <details class="faq-item">
+          <summary>How is "multiplayer-ready" determined?</summary>
+          <div class="faq-body">The bot checks each title against Steam Store data and caches the result. This check takes a little time, so right after adding the bot, a few titles may not yet appear in the results — they'll show up the next time you run the command.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="cta-band">
+      <h2>Stop debating. Start playing.</h2>
+      <p>Add the bot to Discord and have everyone run <code>/link</code> to get started.</p>
+      <a class="btn btn-primary btn-lg" href="{{INVITE_URL}}">Add to Discord</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <p class="footer-brand">Discord × Steam VC Bot</p>
+        <p>Suggests games shared by everyone in your voice channel.</p>
+      </div>
+      <nav class="footer-links" aria-label="Legal">
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/tokushoho">Legal Notice (Tokushoho)</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="mailto:{{CONTACT_EMAIL}}">Contact</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 {{運営者名}}</p>
+      <p class="footer-disclaimer">Steam is a trademark of Valve Corporation. This service is not an official product of Valve Corporation or Discord Inc.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

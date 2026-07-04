@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Discord × Steam VC Bot — 今日遊べるゲームをVCで即決</title>
+<meta name="description" content="ボイスチャンネルに集まったメンバー共通のSteam所持ゲームから、マルチプレイ対応タイトルを自動提案するDiscord Bot。/link で連携し、VCで /games または /pick を打つだけ。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">本文へスキップ</a>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#top" aria-label="トップへ">
+      <svg class="brand-mark" viewBox="0 0 34 34" role="img" aria-hidden="true">
+        <defs>
+          <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#5865f2"/>
+            <stop offset="1" stop-color="#1b8de0"/>
+          </linearGradient>
+        </defs>
+        <rect width="34" height="34" rx="10" fill="url(#brandGrad)"/>
+        <circle cx="13.5" cy="17" r="3.1" fill="#fff"/>
+        <circle cx="21.5" cy="12.5" r="3.1" fill="#fff" fill-opacity="0.85"/>
+        <circle cx="21.5" cy="21.5" r="3.1" fill="#fff" fill-opacity="0.85"/>
+      </svg>
+      <span class="brand-text">Discord × Steam VC Bot</span>
+    </a>
+    <nav class="nav-links" aria-label="ページ内リンク">
+      <a href="#features">機能</a>
+      <a href="#how">使い方</a>
+      <a href="#pricing">料金</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="lang-switch" href="en/index.html" hreflang="en" lang="en">EN</a>
+      <a class="btn btn-primary btn-sm" href="{{INVITE_URL}}">Discordに追加</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero" id="top">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">Discord Bot ・ Steam連携</p>
+        <h1>今夜みんなで遊べるゲーム、<br>ボイスチャンネルで即決。</h1>
+        <p class="lead">
+          VCに集まったメンバー全員が持っているSteamゲームの中から、マルチプレイ対応タイトルを自動でピックアップ。
+          「何やる？」の相談時間を、プレイ時間に変えます。
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary btn-lg" href="{{INVITE_URL}}">Discordに追加する</a>
+          <a class="btn btn-ghost btn-lg" href="#how">使い方を見る</a>
+        </div>
+        <p class="hero-note">無料で開始できます・クレジットカード登録不要</p>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="mock-embed">
+          <div class="mock-embed-bar"></div>
+          <p class="mock-embed-title">🎮 今日一緒に遊べるゲーム</p>
+          <ol class="mock-embed-list">
+            <li><span class="mock-rank">1</span><span class="mock-name">Left 4 Dead 2</span><span class="mock-meta">合計 312.4時間</span></li>
+            <li><span class="mock-rank">2</span><span class="mock-name">Portal 2</span><span class="mock-meta">合計 58.0時間</span></li>
+            <li><span class="mock-rank">3</span><span class="mock-name">Deep Rock Galactic</span><span class="mock-meta">合計 41.2時間</span></li>
+            <li><span class="mock-rank">4</span><span class="mock-name">It Takes Two</span><span class="mock-meta">合計 12.6時間</span></li>
+          </ol>
+          <p class="mock-embed-footer">未紐づけ: なし ・ 取得不可: なし</p>
+        </div>
+        <p class="visual-caption">※ /games 実行イメージ（例）</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="section-inner">
+      <div class="section-head">
+        <p class="eyebrow">Features</p>
+        <h2 class="section-title">できること</h2>
+        <p class="section-lead">難しい設定は不要。Steamプロフィールを紐づけて、VCでコマンドを打つだけです。</p>
+      </div>
+      <div class="card-grid cols-4">
+        <div class="card">
+          <div class="card-icon" aria-hidden="true">🔗</div>
+          <h3><code>/link</code> でかんたん連携</h3>
+          <p>SteamプロフィールURL・SteamID64・カスタムURL名のいずれかを渡すだけ。外部サイトへのログインは不要です。連携解除は <code>/unlink</code>、状況確認は <code>/profile</code> でいつでも。</p>
+        </div>
+        <div class="card">
+          <div class="card-icon" aria-hidden="true">🎮</div>
+          <h3><code>/games</code> で共通ゲームを提案</h3>
+          <p>VCにいる連携済みメンバー全員の共通所持ゲームから、マルチプレイ対応タイトルを直近のプレイ時間順に最大10件表示します。絞り込まず全件見たいときは <code>all:True</code>。</p>
+        </div>
+        <div class="card">
+          <div class="card-icon" aria-hidden="true">🎲</div>
+          <h3><code>/pick</code> で1本だけ提案</h3>
+          <p>候補が多くて決められない時は、共通所持ゲームの中からランダムに1本だけピックアップ。相談する時間すら惜しい時に。</p>
+        </div>
+        <div class="card">
+          <div class="card-icon" aria-hidden="true">👥</div>
+          <h3>VCを自動検出</h3>
+          <p>チャンネルの指定は不要です。コマンドを実行した本人が今いるボイスチャンネルを自動で認識し、連携済みメンバーが2人以上いればすぐに実行できます。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt" id="how">
+    <div class="section-inner">
+      <div class="section-head">
+        <p class="eyebrow">How it works</p>
+        <h2 class="section-title">使い方は3ステップ</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num" aria-hidden="true">1</div>
+          <h3>Discordに追加</h3>
+          <p>下のボタンからサーバーにBotを追加します。設定はこれだけで完了です。</p>
+        </div>
+        <div class="step">
+          <div class="step-num" aria-hidden="true">2</div>
+          <h3><code>/link</code> で紐づけ</h3>
+          <p>メンバーそれぞれが自分のSteamプロフィールURLを <code>/link</code> で紐づけます。Steam側で「ゲームの詳細」を公開設定にしておいてください。</p>
+        </div>
+        <div class="step">
+          <div class="step-num" aria-hidden="true">3</div>
+          <h3>VCで <code>/games</code></h3>
+          <p>ボイスチャンネルに集まったら <code>/games</code>（または <code>/pick</code>）を実行するだけ。今日遊べる候補がすぐ届きます。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="section-inner">
+      <div class="section-head">
+        <p class="eyebrow">Pricing</p>
+        <h2 class="section-title">料金プラン</h2>
+        <p class="section-lead">まずは無料でお試しいただけます。使い込むほど恩恵が大きいサーバーには、プレミアムをどうぞ。</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <p class="price-plan">無料プラン</p>
+          <p class="price-amount">¥0</p>
+          <ul class="price-list">
+            <li><code>/games</code>・<code>/pick</code> 合計でサーバーごとに1日3回・月60回まで</li>
+            <li><code>/link</code>・<code>/unlink</code>・<code>/profile</code> は回数無制限</li>
+            <li>クレジットカード登録不要ですぐ開始</li>
+            <li>回数はローリングウィンドウで自動的に回復</li>
+          </ul>
+          <a class="btn btn-ghost btn-lg" href="{{INVITE_URL}}">無料で追加する</a>
+        </div>
+        <div class="price-card is-premium">
+          <span class="price-badge">おすすめ</span>
+          <p class="price-plan">プレミアムプラン</p>
+          <p class="price-amount">¥380<span>/月（サーバー単位・税込）</span></p>
+          <ul class="price-list">
+            <li><code>/games</code>・<code>/pick</code> の回数制限なし</li>
+            <li>サーバー単位の契約なので、VCに集まった全員が恩恵を受けられる</li>
+            <li>Stripeによる安全なカード決済</li>
+            <li><code>/premium</code> コマンドでご契約状況をいつでも確認</li>
+          </ul>
+          <a class="btn btn-primary btn-lg" href="{{INVITE_URL}}">Discordに追加してアップグレード</a>
+          <p class="price-foot">ご契約はサーバー追加後、Discord内の <code>/premium</code> コマンドから行えます。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt" id="faq">
+    <div class="section-inner">
+      <div class="section-head">
+        <p class="eyebrow">FAQ</p>
+        <h2 class="section-title">よくあるご質問</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>対応言語は？</summary>
+          <div class="faq-body">日本語と英語に対応しています。Discordクライアントの表示言語に応じて、Botの返信も自動的に切り替わります。</div>
+        </details>
+        <details class="faq-item">
+          <summary>Steamのプロフィールが非公開だと使えませんか？</summary>
+          <div class="faq-body"><code>/games</code>・<code>/pick</code> で所持ゲームを取得するには、Steamのプライバシー設定で「ゲームの詳細」を公開にしておく必要があります。非公開のメンバーは候補の集計対象から除外され、注記としてお名前が表示されます。</div>
+        </details>
+        <details class="faq-item">
+          <summary>VCに何人いれば使えますか？</summary>
+          <div class="faq-body">ボイスチャンネルに、Steam連携済みで所持ゲームの取得ができたメンバーが2人以上いれば実行できます。1人だけの場合や、全員が未連携の場合は実行できません。</div>
+        </details>
+        <details class="faq-item">
+          <summary>無料枠を使い切ったらどうなりますか？</summary>
+          <div class="faq-body">サーバーごとに1日3回・月60回のいずれかに達すると、それぞれの期間が経過することで自動的に回復します。すぐに使いたい場合はプレミアムへのアップグレードで即座に無制限になります。</div>
+        </details>
+        <details class="faq-item">
+          <summary>支払い方法や解約について教えてください。</summary>
+          <div class="faq-body">プレミアムはStripeによるクレジットカード決済のみに対応しています。ご契約状況は <code>/premium</code> コマンドでいつでも確認でき、解約もそこから行えます。</div>
+        </details>
+        <details class="faq-item">
+          <summary>マルチプレイ対応の判定はどのように行っていますか？</summary>
+          <div class="faq-body">Steam Store側の情報をもとに自動で判定し、結果をキャッシュしています。判定には少し時間がかかるため、追加した直後は一部タイトルが候補に反映されないことがあります（次回の実行時には反映されます）。</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="cta-band">
+      <h2>今夜のゲーム選び、もう迷わない。</h2>
+      <p>Discordに追加して、VCメンバーと <code>/link</code> するだけで始められます。</p>
+      <a class="btn btn-primary btn-lg" href="{{INVITE_URL}}">Discordに追加する</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <p class="footer-brand">Discord × Steam VC Bot</p>
+        <p>VCメンバーの共通所持ゲームから、今日遊べるタイトルを提案します。</p>
+      </div>
+      <nav class="footer-links" aria-label="法的情報">
+        <a href="/terms">利用規約</a>
+        <a href="/privacy">プライバシーポリシー</a>
+        <a href="/tokushoho">特定商取引法に基づく表記</a>
+        <a href="/refund">返金ポリシー</a>
+        <a href="mailto:{{CONTACT_EMAIL}}">お問い合わせ</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 {{運営者名}}</p>
+      <p class="footer-disclaimer">Steamは Valve Corporation の商標です。当サービスはValve社およびDiscord Inc.の公式サービスではありません。</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
