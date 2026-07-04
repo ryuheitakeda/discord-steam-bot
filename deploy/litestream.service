@@ -1,0 +1,33 @@
+# Litestream常駐レプリケーション — systemdユニットテンプレート（Raspberry Pi想定）
+#
+# 使い方:
+#   1. Litestreamを導入（例: 公式.debパッケージ、または以下のようにバイナリを配置）
+#      https://litestream.io/install/ の手順に従う（Raspberry Pi/ARM向けビルドあり）
+#   2. {{BOT_DIR}} を実際のBot配置先の絶対パスに置換する
+#   3. /etc/systemd/system/litestream.service に配置
+#   4. systemctl daemon-reload && systemctl enable --now litestream.service
+#
+# 前提: {{BOT_DIR}}/deploy/litestream.yml が設置済みで、R2の接続情報が埋まっていること
+
+[Unit]
+Description=Litestream replication (bot.db -> Cloudflare R2)
+Documentation=https://litestream.io/
+After=network-online.target
+Wants=network-online.target
+# Botより先/並行して起動し、bot.dbへの書き込みを継続的にレプリケーションする
+Before=steambot.service
+
+[Service]
+Type=simple
+User=ryu
+Group=ryu
+ExecStart=/usr/bin/litestream replicate -config {{BOT_DIR}}/deploy/litestream.yml
+Restart=always
+RestartSec=5
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=litestream
+
+[Install]
+WantedBy=multi-user.target

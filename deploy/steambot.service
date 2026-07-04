@@ -1,0 +1,53 @@
+# Discord x Steam VC Bot — systemd ユニットテンプレート（Raspberry Pi想定）
+#
+# 使い方:
+#   1. {{BOT_DIR}} を実際のBot配置先の絶対パスに置換する（例: /home/ryu/discord-steam-bot）
+#      sed -i 's#{{BOT_DIR}}#/home/ryu/discord-steam-bot#g' steambot.service
+#   2. /etc/systemd/system/steambot.service に配置
+#   3. systemctl daemon-reload && systemctl enable --now steambot.service
+#
+# 前提:
+#   - {{BOT_DIR}} に .venv（python -m venv .venv; pip install -r requirements.txt 済み）と
+#     .env（DISCORD_TOKEN等）が配置されていること
+#   - 実行ユーザーは Raspberry Pi のログインユーザー `ryu` を想定（異なる場合は User/Group を変更）
+#
+# 注意: Piで既に別名・別内容のsystemdユニットでBotが稼働している可能性がある。
+# その場合はいきなり置き換えず、このテンプレートを参考に既存ユニットとの差分を確認し、
+# 二重起動（Discordトークンの二重接続）が起きないよう並行稼働させないこと。
+
+[Unit]
+Description=Discord x Steam VC Bot
+After=network-online.target
+Wants=network-online.target
+# Litestreamでリストア済みDBを使う運用の場合、リストア完了後に起動したいので
+# litestream.serviceを先に起動しておく想定（同時起動でも動作はするが順序を明示）
+Wants=litestream.service
+
+[Service]
+Type=simple
+User=ryu
+Group=ryu
+WorkingDirectory={{BOT_DIR}}
+EnvironmentFile={{BOT_DIR}}/.env
+ExecStart={{BOT_DIR}}/.venv/bin/python bot.py
+Restart=always
+RestartSec=5
+TimeoutStopSec=30
+
+# ログはjournaldに集約（journalctl -u steambot -f で確認）
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=steambot
+
+# 監視（deploy/monitoring.md 参照）: このサービスが失敗（Restart上限到達等）した際に
+# 通知したい場合は OnFailure= で別ユニットを指定する運用も可能（例: OnFailure=steambot-notify-failure.service）
+# OnFailure=steambot-notify-failure.service
+
+# 任意の軽量サンドボックス化（環境によっては動作に影響するため、まず無効のまま導入し
+# 問題なければ有効化を検討する）
+# NoNewPrivileges=true
+# PrivateTmp=true
+# ProtectSystem=full
+
+[Install]
+WantedBy=multi-user.target

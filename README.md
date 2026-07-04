@@ -60,3 +60,105 @@ python bot.py
 
 - 所持ゲームのキャッシュは1時間、マルチプレイ判定のキャッシュは30日で更新されます
 - Steamストアの非公式API（appdetails）を使ってマルチプレイ判定を行うため、レート制限を避けて1コマンドあたり新規判定は最大30件までに抑えています。初回実行時は一部タイトルが「未判定」として除外されることがありますが、次回以降のキャッシュ蓄積で解消されます
+
+## デプロイ（Raspberry Pi / systemd）
+
+本番運用は当面Raspberry Pi上でのsystemd常駐を想定しています。テンプレート一式は`deploy/`ディレクトリにまとまっています。
+
+1. Pi上の任意のディレクトリ（以下`{{BOT_DIR}}`）にBotのコード一式（`bot.db`と`.env`を含む）を配置し、仮想環境を作って依存をインストールする
+
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements.txt
+   ```
+
+2. `deploy/steambot.service`の`{{BOT_DIR}}`を実際の絶対パス（例: `/home/ryu/discord-steam-bot`）に置換し、`/etc/systemd/system/steambot.service`に配置する
+3. 有効化・起動する
+
+   ```bash
+   sudo systemctl daemon-reload
+   sudo systemctl enable --now steambot.service
+   journalctl -u steambot -f   # ログ確認（起動ログにコマンド同期の結果が出れば準備完了）
+   ```
+
+**注意:** Pi上で既に別のsystemdユニット名・別の起動方式でBotが稼働している可能性があります。その場合はいきなり置き換えず、既存ユニットの内容と`deploy/steambot.service`を見比べて差分を適用してください。Botのトークンは同一のため、新旧ユニットが同時に起動した状態（二重接続）にならないよう、切り替え時は旧ユニットを停止してから新ユニットを起動してください。
+
+Stripe Webhookを外部（Stripe）から受けられるようにするには`deploy/cloudflare-tunnel.md`の手順でCloudflare Tunnelを設定してください。
+
+## バックアップ（Litestream + R2）とリストア手順
+
+`bot.db`（SQLite）は[Litestream](https://litestream.io/)でCloudflare R2へ継続的にレプリケーションします。設定テンプレートは`deploy/litestream.yml`、常駐用のsystemdユニットは`deploy/litestream.service`です。
+
+### 導入
+
+1. [Litestreamをインストール](https://litestream.io/install/)（Raspberry Pi向けのARMビルドあり）
+2. `deploy/litestream.yml`の`{{BOT_DIR}}` `{{R2_BUCKET}}` `{{R2_ENDPOINT}}` `{{R2_ACCESS_KEY_ID}}` `{{R2_SECRET_ACCESS_KEY}}`を実際の値に置換し、`{{BOT_DIR}}/deploy/litestream.yml`に配置する
+3. `deploy/litestream.service`の`{{BOT_DIR}}`を置換し、`/etc/systemd/system/litestream.service`に配置する
+4. 初回レプリケーションを手動で確認してから常駐化する
+
+   ```bash
+   # 動作確認（Ctrl+Cで停止）
+   litestream replicate -config {{BOT_DIR}}/deploy/litestream.yml
+
+   # 問題なければ常駐化
+   sudo systemctl daemon-reload
+   sudo systemctl enable --now litestream.service
+   ```
+
+### リストア
+
+Pi本体の故障・SDカード破損などでbot.dbを失った場合の復元:
+
+```bash
+litestream restore -config {{BOT_DIR}}/deploy/litestream.yml -o {{BOT_DIR}}/bot.db {{BOT_DIR}}/bot.db
+# Botを起動する前に一度停止しておくこと（steambot.serviceがbot.dbを開いたままだと復元先と競合する）
+```
+
+### リストア訓練（定期的に実施すること）
+
+バックアップが「取れているつもり」で実際には壊れている、というのを避けるため、本番とは別のディレクトリに定期的に復元して整合性を確認する。
+
+```bash
+mkdir -p /tmp/steambot-restore-drill
+litestream restore -config {{BOT_DIR}}/deploy/litestream.yml -o /tmp/steambot-restore-drill/bot.db {{BOT_DIR}}/bot.db
+
+# SQLite自体の整合性チェック
+sqlite3 /tmp/steambot-restore-drill/bot.db "PRAGMA integrity_check;"
+# "ok" が返ればOK
+
+# 主要テーブルに想定通りレコードがあるか目視確認（テーブル名はdb.pyのスキーマを参照）
+sqlite3 /tmp/steambot-restore-drill/bot.db ".tables"
+
+rm -rf /tmp/steambot-restore-drill
+```
+
+## 監視
+
+`deploy/monitoring.md`にhealthchecks.ioを使った死活監視の2案（systemdのOnFailure通知 / Bot内定期Ping）とDiscord Webhook通知の例をまとめています。まずは案A（OnFailure、Bot本体無改修）から導入し、必要に応じて案Bの検討を行ってください。
+
+## 別ホストへの移行手順
+
+Raspberry Piから別のホスト（将来的なVPS移行など。候補: WebARENA Indigo、さくらのVPS等）へ移す場合、基本的にはBotディレクトリ（コード一式 + `bot.db` + `.env`）をまるごと`rsync`で移して、依存をインストールし、systemdを有効化するだけです。
+
+```bash
+# 旧ホストでBotを一度停止（bot.dbの整合性を保つため）
+ssh old-host "sudo systemctl stop steambot litestream"
+
+# コード一式 + bot.db + .env を新ホストへ転送
+rsync -avz --exclude '.venv' --exclude '__pycache__' \
+  old-host:{{BOT_DIR}}/ new-host:{{BOT_DIR}}/
+
+# 新ホスト側
+ssh new-host "cd {{BOT_DIR}} && python -m venv .venv && \
+  .venv/bin/pip install -r requirements.txt"
+
+# deploy/steambot.service・litestream.service・（必要ならcloudflared.service）を配置し直し
+ssh new-host "sudo systemctl daemon-reload && \
+  sudo systemctl enable --now litestream.service steambot.service"
+
+# 旧ホストのユニットは無効化しておく
+ssh old-host "sudo systemctl disable --now steambot litestream"
+```
+
+`bot.db`を直接rsyncする代わりに、新ホストで`litestream restore`から復元する形でも移行できます（`bot.db`のrsync時にBotが書き込み中だと不整合の恐れがあるため、Litestream運用が定着していればこちらの方が安全）。移行後は旧ホストのcloudflaredトンネル設定（該当する場合）も新ホストに付け替えることを忘れないこと。
