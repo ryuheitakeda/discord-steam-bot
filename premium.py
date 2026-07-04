@@ -18,7 +18,7 @@ class QuotaResult:
     allowed: bool
     is_premium: bool
     retry_after: Optional[float] = None  # 制限に達した場合、最も近い解除までの秒数
-    reason: Optional[str] = None
+    reason: Optional[str] = None  # 言語非依存のキー（例: "quota_exceeded"）。表示側でt()して翻訳する
 
 
 async def check_quota(guild_id: str) -> QuotaResult:
@@ -48,7 +48,9 @@ async def check_quota(guild_id: str) -> QuotaResult:
             allowed=False,
             is_premium=False,
             retry_after=max(retry_afters),
-            reason="無料枠の利用回数上限に達しました",
+            # reasonはUI表示用の言語非依存キー（localesのquota.<reason>で表示側が翻訳する）。
+            # ロジック層に言語を持ち込まないための設計。
+            reason="quota_exceeded",
         )
 
     return QuotaResult(allowed=True, is_premium=False)

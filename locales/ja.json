@@ -1,0 +1,75 @@
+{
+  "link.command_description": "自分のSteamアカウントを紐づけます（プロフィールURL / SteamID64 / カスタムURL名）",
+  "link.param_steam_description": "例: https://steamcommunity.com/id/xxxx",
+  "link.error": "❌ {error}",
+
+  "unlink.command_description": "Steamアカウントの紐づけを解除します",
+  "unlink.success": "✅ 紐づけを解除しました。",
+  "unlink.not_linked": "紐づけは登録されていません。",
+
+  "profile.command_description": "Steam連携状況を確認します",
+  "profile.param_user_description": "確認したいユーザー（省略時は自分）",
+  "profile.not_linked": "{mention} はまだSteamアカウントを紐づけていません。",
+  "profile.embed_title": "{display_name} のSteam連携",
+
+  "games.command_description": "VCメンバーの共通所持ゲームから今日遊べるゲームを提案します",
+  "games.param_all_description": "マルチプレイ対応で絞り込まず、共通所持ゲームを全て表示する",
+  "games.error_no_voice_channel": "❌ ボイスチャンネルに入ってから実行してください。\n（コマンドはVCがあるサーバーのテキストチャンネルで実行してください。DMでは使えません）",
+  "games.error_need_two_members": "❌ Steam連携済みで所持ゲームが取得できたメンバーが2人以上必要です。\n`/link` で紐づけ、Steamの「ゲームの詳細」を公開にしてください。",
+  "games.reason_all": "共通の所持ゲーム",
+  "games.reason_multiplayer": "共通のマルチプレイ対応ゲーム",
+  "games.no_candidates": "😢 {reason}が見つかりませんでした。",
+  "games.note_unlinked": "未紐づけ: {names}",
+  "games.note_private": "取得不可（非公開など）: {names}",
+  "games.note_category_limit": "一部ゲームは未判定のため次回実行時に反映されます",
+  "games.title_all": "🎮 共通所持ゲーム一覧",
+  "games.title_default": "🎮 今日一緒に遊べるゲーム",
+  "games.total_hours": "合計 {hours}時間",
+  "games.upsell_retry": "あと約 **{duration}** で回復します。",
+  "games.upsell_retry_unknown": "しばらく時間を置いてから再度お試しください。",
+  "games.upsell_field_name": "プレミアムにアップグレード",
+  "games.upsell_field_value": "プレミアム（月額）に登録すると回数制限なくご利用いただけます。\n料金: {price}\n詳しくは `/premium` コマンドをご確認ください。",
+
+  "pick.command_description": "共通の所持ゲームからランダムに1本を提案します",
+  "pick.param_all_description": "マルチプレイ対応で絞り込まず、共通所持ゲーム全体から選ぶ",
+  "pick.title": "🎲 今日はこれ！",
+
+  "duration.hours_minutes": "{hours}時間{minutes}分",
+  "duration.hours_only": "{hours}時間",
+  "duration.minutes_only": "{minutes}分",
+
+  "quota.quota_exceeded": "⏳ 無料枠を使い切りました",
+
+  "premium.command_description": "このサーバーのプレミアム状況を確認します",
+  "premium.embed_title_active": "⭐ プレミアム有効",
+  "premium.field_plan": "プラン",
+  "premium.field_source": "付与元",
+  "premium.field_expires": "期限",
+  "premium.expires_indefinite": "無期限",
+  "premium.window_days": "{days}日間",
+  "premium.window_seconds": "{seconds}秒間",
+  "premium.usage_line": "- {label}: {count}/{limit} 回",
+  "premium.embed_title_free": "無料プラン利用状況",
+  "premium.upgrade_field_name": "プレミアムのご案内",
+  "premium.upgrade_field_value": "プレミアム（月額）に登録すると回数制限なくご利用いただけます。\n料金: {price}\n（課金導線は今後のアップデートで追加予定です）",
+
+  "grant.command_description": "【オーナー限定】サーバーにプレミアムを付与します",
+  "grant.param_days_description": "有効日数（省略時は無期限）",
+  "grant.expires_in_days": "{days}日後",
+  "grant.success": "✅ サーバー `{guild_id}` にプレミアムを付与しました（期限: {expires_text}）。",
+
+  "revoke.command_description": "【オーナー限定】サーバーの手動付与プレミアムを剥奪します",
+  "revoke.success": "✅ サーバー `{guild_id}` の手動付与プレミアムを剥奪しました。",
+  "revoke.not_found": "サーバー `{guild_id}` に手動付与のプレミアムは登録されていません。",
+
+  "common.param_guild_id_description": "対象サーバーID（省略時は実行サーバー）",
+  "common.owner_only_error": "❌ このコマンドはBotオーナーのみ実行できます。",
+  "common.field_steamid": "SteamID64",
+  "common.warning_field_name": "⚠️ 注意",
+
+  "link_finalize.embed_title": "Steamアカウントを紐づけました",
+  "link_finalize.private_profile_warning": "プロフィールが非公開になっているようです。\nSteamの「プライバシー設定」で「ゲームの詳細」を公開にしないと、所持ゲームを取得できません。",
+  "link_finalize.games_count_field": "所持ゲーム数",
+  "link_finalize.games_count_value": "{count}本",
+  "link_finalize.zero_games_warning": "所持ゲームが0件、または「ゲームの詳細」の公開設定がオフになっている可能性があります。"
+}

@@ -3,14 +3,16 @@
 import logging
 import random
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Union
 
 import discord
 from discord import app_commands
+from discord.app_commands import locale_str
 from discord.ext import commands
 
 import db
 import premium
+from i18n import normalize_locale, t
 from steam_api import MAX_NEW_CATEGORY_FETCHES_PER_CALL, SteamAPIError
 
 logger = logging.getLogger("discord-steam-bot.games")
@@ -19,35 +21,39 @@ CANDIDATE_POOL_SIZE = 60
 DISPLAY_LIMIT = 10
 
 
-def _format_duration(seconds: float) -> str:
-    """秒数を「N時間M分」形式の人間可読文字列に変換する。"""
+def _format_duration(locale: Optional[Union[discord.Locale, str]], seconds: float) -> str:
+    """秒数を「N時間M分」形式の人間可読文字列に変換する（ロケール対応）。"""
     total_minutes = max(1, int(seconds // 60))
     hours, minutes = divmod(total_minutes, 60)
     if hours and minutes:
-        return f"{hours}時間{minutes}分"
+        return t(locale, "duration.hours_minutes", hours=hours, minutes=minutes)
     if hours:
-        return f"{hours}時間"
-    return f"{minutes}分"
+        return t(locale, "duration.hours_only", hours=hours)
+    return t(locale, "duration.minutes_only", minutes=minutes)
 
 
-def _build_upsell_embed(quota: "premium.QuotaResult") -> discord.Embed:
-    """無料枠を使い切った際に表示するアップセルEmbedを構築する。"""
+def _build_upsell_embed(
+    locale: Optional[Union[discord.Locale, str]], quota: "premium.QuotaResult"
+) -> discord.Embed:
+    """無料枠を使い切った際に表示するアップセルEmbedを構築する。
+
+    quota.reasonは言語非依存のキー（例: "quota_exceeded"）。ここ（表示層）でt()して翻訳する。
+    """
+    title_key = f"quota.{quota.reason}" if quota.reason else "quota.quota_exceeded"
     embed = discord.Embed(
-        title="⏳ 無料枠を使い切りました",
+        title=t(locale, title_key),
         color=discord.Color.orange(),
     )
     if quota.retry_after is not None:
-        embed.description = f"あと約 **{_format_duration(quota.retry_after)}** で回復します。"
+        embed.description = t(
+            locale, "games.upsell_retry", duration=_format_duration(locale, quota.retry_after)
+        )
     else:
-        embed.description = "しばらく時間を置いてから再度お試しください。"
+        embed.description = t(locale, "games.upsell_retry_unknown")
 
     embed.add_field(
-        name="プレミアムにアップグレード",
-        value=(
-            "プレミアム（月額）に登録すると回数制限なくご利用いただけます。\n"
-            f"料金: {premium.PRICE_STRIPE}\n"
-            "詳しくは `/premium` コマンドをご確認ください。"
-        ),
+        name=t(locale, "games.upsell_field_name"),
+        value=t(locale, "games.upsell_field_value", price=premium.PRICE_STRIPE),
         inline=False,
     )
     return embed
@@ -174,14 +180,23 @@ class GamesCog(commands.Cog):
         return filtered, limit_hit
 
     @staticmethod
-    def _add_notes(embed: discord.Embed, result: PipelineResult) -> None:
+    def _add_notes(
+        locale: Optional[Union[discord.Locale, str]],
+        embed: discord.Embed,
+        result: PipelineResult,
+    ) -> None:
+        separator = "、" if normalize_locale(locale) == "ja" else ", "
         notes = []
         if result.unlinked_names:
-            notes.append("未紐づけ: " + "、".join(result.unlinked_names))
+            notes.append(
+                t(locale, "games.note_unlinked", names=separator.join(result.unlinked_names))
+            )
         if result.private_names:
-            notes.append("取得不可（非公開など）: " + "、".join(result.private_names))
+            notes.append(
+                t(locale, "games.note_private", names=separator.join(result.private_names))
+            )
         if result.category_limit_hit:
-            notes.append("一部ゲームは未判定のため次回実行時に反映されます")
+            notes.append(t(locale, "games.note_category_limit"))
         if notes:
             embed.set_footer(text=" / ".join(notes))
 
@@ -227,11 +242,11 @@ class GamesCog(commands.Cog):
     async def _run_pipeline(
         self, interaction: discord.Interaction, all_flag: bool
     ) -> Optional[PipelineResult]:
+        locale = interaction.locale
         channel = await self._resolve_voice_channel(interaction)
         if channel is None:
             await interaction.followup.send(
-                "❌ ボイスチャンネルに入ってから実行してください。\n"
-                "（コマンドはVCがあるサーバーのテキストチャンネルで実行してください。DMでは使えません）",
+                t(locale, "games.error_no_voice_channel"),
                 ephemeral=True,
             )
             return None
@@ -243,8 +258,7 @@ class GamesCog(commands.Cog):
 
         if len(member_games) < 2:
             await interaction.followup.send(
-                "❌ Steam連携済みで所持ゲームが取得できたメンバーが2人以上必要です。\n"
-                "`/link` で紐づけ、Steamの「ゲームの詳細」を公開にしてください。",
+                t(locale, "games.error_need_two_members"),
                 ephemeral=True,
             )
             return None
@@ -255,25 +269,29 @@ class GamesCog(commands.Cog):
             candidates, category_limit_hit = await self._filter_multiplayer(candidates)
 
         if not candidates:
-            reason = "共通の所持ゲーム" if all_flag else "共通のマルチプレイ対応ゲーム"
+            reason_key = "games.reason_all" if all_flag else "games.reason_multiplayer"
             await interaction.followup.send(
-                f"😢 {reason}が見つかりませんでした。", ephemeral=True
+                t(locale, "games.no_candidates", reason=t(locale, reason_key)),
+                ephemeral=True,
             )
             return None
 
         return PipelineResult(candidates, unlinked_names, private_names, category_limit_hit)
 
     @app_commands.command(
-        name="games", description="VCメンバーの共通所持ゲームから今日遊べるゲームを提案します"
+        name="games", description=locale_str("games.command_description")
     )
     @app_commands.guild_only()
-    @app_commands.describe(all="マルチプレイ対応で絞り込まず、共通所持ゲームを全て表示する")
+    @app_commands.describe(all=locale_str("games.param_all_description"))
     async def games(self, interaction: discord.Interaction, all: bool = False):
         await interaction.response.defer()
+        locale = interaction.locale
 
         quota = await premium.check_quota(str(interaction.guild_id))
         if not quota.allowed:
-            await interaction.followup.send(embed=_build_upsell_embed(quota), ephemeral=True)
+            await interaction.followup.send(
+                embed=_build_upsell_embed(locale, quota), ephemeral=True
+            )
             return
 
         result = await self._run_pipeline(interaction, all)
@@ -284,27 +302,31 @@ class GamesCog(commands.Cog):
         for i, c in enumerate(result.candidates[:DISPLAY_LIMIT], start=1):
             url = f"https://store.steampowered.com/app/{c.appid}"
             hours = c.playtime_forever / 60
-            lines.append(f"**{i}. [{c.name}]({url})** — 合計 {hours:.1f}時間")
+            total_hours = t(locale, "games.total_hours", hours=f"{hours:.1f}")
+            lines.append(f"**{i}. [{c.name}]({url})** — {total_hours}")
 
-        title = "🎮 共通所持ゲーム一覧" if all else "🎮 今日一緒に遊べるゲーム"
+        title = t(locale, "games.title_all" if all else "games.title_default")
         embed = discord.Embed(
             title=title, description="\n".join(lines), color=discord.Color.green()
         )
-        self._add_notes(embed, result)
+        self._add_notes(locale, embed, result)
         await interaction.followup.send(embed=embed)
         await premium.record_use(str(interaction.guild_id), str(interaction.user.id), "games")
 
     @app_commands.command(
-        name="pick", description="共通の所持ゲームからランダムに1本を提案します"
+        name="pick", description=locale_str("pick.command_description")
     )
     @app_commands.guild_only()
-    @app_commands.describe(all="マルチプレイ対応で絞り込まず、共通所持ゲーム全体から選ぶ")
+    @app_commands.describe(all=locale_str("pick.param_all_description"))
     async def pick(self, interaction: discord.Interaction, all: bool = False):
         await interaction.response.defer()
+        locale = interaction.locale
 
         quota = await premium.check_quota(str(interaction.guild_id))
         if not quota.allowed:
-            await interaction.followup.send(embed=_build_upsell_embed(quota), ephemeral=True)
+            await interaction.followup.send(
+                embed=_build_upsell_embed(locale, quota), ephemeral=True
+            )
             return
 
         result = await self._run_pipeline(interaction, all)
@@ -314,14 +336,14 @@ class GamesCog(commands.Cog):
         choice = random.choice(result.candidates)
         url = f"https://store.steampowered.com/app/{choice.appid}"
         embed = discord.Embed(
-            title="🎲 今日はこれ！",
+            title=t(locale, "pick.title"),
             description=f"**[{choice.name}]({url})**",
             color=discord.Color.gold(),
         )
         embed.set_image(
             url=f"https://cdn.cloudflare.steamstatic.com/steam/apps/{choice.appid}/header.jpg"
         )
-        self._add_notes(embed, result)
+        self._add_notes(locale, embed, result)
         await interaction.followup.send(embed=embed)
         await premium.record_use(str(interaction.guild_id), str(interaction.user.id), "pick")
 

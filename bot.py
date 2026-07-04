@@ -13,6 +13,7 @@ load_dotenv()
 
 import db
 from steam_api import SteamClient
+from translator import LocaleTranslator
 
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 STEAM_API_KEY = os.getenv("STEAM_API_KEY")
@@ -43,6 +44,8 @@ class SteamVCBot(commands.Bot):
 
         for ext in INITIAL_EXTENSIONS:
             await self.load_extension(ext)
+
+        await self.tree.set_translator(LocaleTranslator())
 
         if GUILD_ID:
             guild = discord.Object(id=int(GUILD_ID))

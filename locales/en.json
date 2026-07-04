@@ -1,0 +1,75 @@
+{
+  "link.command_description": "Link your Steam account (profile URL / SteamID64 / custom URL name)",
+  "link.param_steam_description": "e.g. https://steamcommunity.com/id/xxxx",
+  "link.error": "❌ {error}",
+
+  "unlink.command_description": "Unlink your Steam account",
+  "unlink.success": "✅ Your Steam account has been unlinked.",
+  "unlink.not_linked": "No linked Steam account was found.",
+
+  "profile.command_description": "Check Steam link status",
+  "profile.param_user_description": "The user to check (defaults to yourself)",
+  "profile.not_linked": "{mention} hasn't linked a Steam account yet.",
+  "profile.embed_title": "{display_name}'s Steam link",
+
+  "games.command_description": "Suggest a game to play today from the games VC members have in common",
+  "games.param_all_description": "Show all common games without filtering to multiplayer-only titles",
+  "games.error_no_voice_channel": "❌ Please join a voice channel before running this command.\n(Run this command in a text channel of a server that has a VC. It doesn't work in DMs.)",
+  "games.error_need_two_members": "❌ At least 2 members with a linked Steam account and a visible game library are required.\nUse `/link` to link your account, and make sure \"Game details\" is set to public on Steam.",
+  "games.reason_all": "common owned games",
+  "games.reason_multiplayer": "common multiplayer-capable games",
+  "games.no_candidates": "😢 No {reason} were found.",
+  "games.note_unlinked": "Not linked: {names}",
+  "games.note_private": "Unavailable (private, etc.): {names}",
+  "games.note_category_limit": "Some games haven't been categorized yet and will be reflected next time",
+  "games.title_all": "🎮 Common owned games",
+  "games.title_default": "🎮 Games to play together today",
+  "games.total_hours": "Total {hours}h",
+  "games.upsell_retry": "Resets in about **{duration}**.",
+  "games.upsell_retry_unknown": "Please wait a while and try again.",
+  "games.upsell_field_name": "Upgrade to Premium",
+  "games.upsell_field_value": "Subscribe to Premium (monthly) for unlimited use.\nPrice: {price}\nSee the `/premium` command for details.",
+
+  "pick.command_description": "Randomly suggest one game from the common library",
+  "pick.param_all_description": "Pick from the entire common library without filtering to multiplayer-only titles",
+  "pick.title": "🎲 Today's pick!",
+
+  "duration.hours_minutes": "{hours}h {minutes}m",
+  "duration.hours_only": "{hours}h",
+  "duration.minutes_only": "{minutes}m",
+
+  "quota.quota_exceeded": "⏳ Free plan limit reached",
+
+  "premium.command_description": "Check this server's premium status",
+  "premium.embed_title_active": "⭐ Premium active",
+  "premium.field_plan": "Plan",
+  "premium.field_source": "Granted by",
+  "premium.field_expires": "Expires",
+  "premium.expires_indefinite": "No expiration",
+  "premium.window_days": "{days}-day",
+  "premium.window_seconds": "{seconds}-second",
+  "premium.usage_line": "- {label}: {count}/{limit} uses",
+  "premium.embed_title_free": "Free plan usage",
+  "premium.upgrade_field_name": "About Premium",
+  "premium.upgrade_field_value": "Subscribe to Premium (monthly) for unlimited use.\nPrice: {price}\n(A payment flow is coming in a future update.)",
+
+  "grant.command_description": "[Owner only] Grant premium to a server",
+  "grant.param_days_description": "Number of valid days (unlimited if omitted)",
+  "grant.expires_in_days": "in {days} day(s)",
+  "grant.success": "✅ Granted premium to server `{guild_id}` (expires: {expires_text}).",
+
+  "revoke.command_description": "[Owner only] Revoke manually granted premium from a server",
+  "revoke.success": "✅ Revoked the manually granted premium from server `{guild_id}`.",
+  "revoke.not_found": "Server `{guild_id}` has no manually granted premium on record.",
+
+  "common.param_guild_id_description": "Target server ID (defaults to the current server)",
+  "common.owner_only_error": "❌ This command can only be run by the bot owner.",
+  "common.field_steamid": "SteamID64",
+  "common.warning_field_name": "⚠️ Note",
+
+  "link_finalize.embed_title": "Your Steam account has been linked",
+  "link_finalize.private_profile_warning": "Your profile appears to be private.\nEnable \"Game details\" in your Steam privacy settings, otherwise your game library can't be fetched.",
+  "link_finalize.games_count_field": "Owned games",
+  "link_finalize.games_count_value": "{count} games",
+  "link_finalize.zero_games_warning": "You have 0 owned games, or \"Game details\" visibility may be turned off."
+}
