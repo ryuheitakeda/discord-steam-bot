@@ -52,6 +52,9 @@
   "premium.embed_title_free": "無料プラン利用状況",
   "premium.upgrade_field_name": "プレミアムのご案内",
   "premium.upgrade_field_value": "プレミアム（月額）に登録すると回数制限なくご利用いただけます。\n料金: {price}\n（課金導線は今後のアップデートで追加予定です）",
+  "premium.subscribe_link": "[💳 今すぐプレミアムに登録する]({url})",
+  "premium.manage_field_name": "契約の管理",
+  "premium.manage_link": "[⚙️ 管理・解約はこちら]({url})",
 
   "grant.command_description": "【オーナー限定】サーバーにプレミアムを付与します",
   "grant.param_days_description": "有効日数（省略時は無期限）",

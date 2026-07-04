@@ -6,18 +6,22 @@ from typing import Optional
 
 import aiohttp
 import discord
+from aiohttp import web
 from discord.ext import commands
 from dotenv import load_dotenv
 
 load_dotenv()
 
 import db
+import stripe_webhook
 from steam_api import SteamClient
 from translator import LocaleTranslator
 
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 STEAM_API_KEY = os.getenv("STEAM_API_KEY")
 GUILD_ID = os.getenv("GUILD_ID")
+STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
+STRIPE_WEBHOOK_PORT = int(os.getenv("STRIPE_WEBHOOK_PORT", "8080"))
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("discord-steam-bot")
@@ -33,6 +37,7 @@ class SteamVCBot(commands.Bot):
         super().__init__(command_prefix="!", intents=intents)
         self.http_session: Optional[aiohttp.ClientSession] = None
         self.steam_client: Optional[SteamClient] = None
+        self.stripe_webhook_runner: Optional[web.AppRunner] = None
 
     async def setup_hook(self):
         if not STEAM_API_KEY:
@@ -46,6 +51,18 @@ class SteamVCBot(commands.Bot):
             await self.load_extension(ext)
 
         await self.tree.set_translator(LocaleTranslator())
+
+        if STRIPE_WEBHOOK_SECRET:
+            self.stripe_webhook_runner = await stripe_webhook.start_webhook_server(
+                STRIPE_WEBHOOK_SECRET, STRIPE_WEBHOOK_PORT
+            )
+            logger.info(
+                "Stripe Webhookサーバーを起動しました (127.0.0.1:%d%s)",
+                STRIPE_WEBHOOK_PORT,
+                stripe_webhook.WEBHOOK_PATH,
+            )
+        else:
+            logger.info("Stripe webhook無効（未設定）")
 
         if GUILD_ID:
             guild = discord.Object(id=int(GUILD_ID))
@@ -62,6 +79,8 @@ class SteamVCBot(commands.Bot):
 
     async def close(self):
         await super().close()
+        if self.stripe_webhook_runner is not None:
+            await self.stripe_webhook_runner.cleanup()
         if self.http_session is not None:
             await self.http_session.close()
         await db.close_db()

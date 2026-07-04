@@ -1,5 +1,6 @@
 """プレミアム状態の確認・付与・剥奪コマンド（/premium /grant /revoke）。"""
 
+import os
 import time
 from datetime import datetime, timezone
 from typing import Optional
@@ -12,6 +13,18 @@ from discord.ext import commands
 import db
 import premium as premium_module
 from i18n import t
+
+# Stripe決済リンク（Payment Link）のベースURL。ここに ?client_reference_id=<guild_id> を
+# 付与してWebhook側でギルドを特定する（Stripe APIコールなしで発行できる設計）。
+STRIPE_PAYMENT_LINK = os.getenv("STRIPE_PAYMENT_LINK")
+# Stripe Customer PortalのURL（契約中ギルド向けの管理/解約導線）。任意設定。
+STRIPE_CUSTOMER_PORTAL = os.getenv("STRIPE_CUSTOMER_PORTAL")
+
+
+def _build_payment_link(guild_id: str) -> str:
+    """STRIPE_PAYMENT_LINKにclient_reference_id=guild_idを付与したURLを組み立てる。"""
+    separator = "&" if "?" in STRIPE_PAYMENT_LINK else "?"
+    return f"{STRIPE_PAYMENT_LINK}{separator}client_reference_id={guild_id}"
 
 
 class PremiumCog(commands.Cog):
@@ -47,6 +60,12 @@ class PremiumCog(commands.Cog):
             embed.add_field(
                 name=t(locale, "premium.field_expires"), value=expires_text, inline=False
             )
+            if STRIPE_CUSTOMER_PORTAL:
+                embed.add_field(
+                    name=t(locale, "premium.manage_field_name"),
+                    value=t(locale, "premium.manage_link", url=STRIPE_CUSTOMER_PORTAL),
+                    inline=False,
+                )
             await interaction.response.send_message(embed=embed, ephemeral=True)
             return
 
@@ -68,11 +87,18 @@ class PremiumCog(commands.Cog):
             description="\n".join(lines),
             color=discord.Color.blurple(),
         )
-        embed.add_field(
-            name=t(locale, "premium.upgrade_field_name"),
-            value=t(locale, "premium.upgrade_field_value", price=premium_module.PRICE_STRIPE),
-            inline=False,
-        )
+        if STRIPE_PAYMENT_LINK:
+            embed.add_field(
+                name=t(locale, "premium.upgrade_field_name"),
+                value=t(locale, "premium.subscribe_link", url=_build_payment_link(guild_id)),
+                inline=False,
+            )
+        else:
+            embed.add_field(
+                name=t(locale, "premium.upgrade_field_name"),
+                value=t(locale, "premium.upgrade_field_value", price=premium_module.PRICE_STRIPE),
+                inline=False,
+            )
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
     @app_commands.command(name="grant", description=locale_str("grant.command_description"))

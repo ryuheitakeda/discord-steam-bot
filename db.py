@@ -57,6 +57,14 @@ CREATE TABLE IF NOT EXISTS entitlements (
     expires_at REAL,
     PRIMARY KEY (subject_type, subject_id, source)
 );
+
+CREATE TABLE IF NOT EXISTS stripe_subscriptions (
+    subscription_id TEXT PRIMARY KEY,
+    guild_id TEXT NOT NULL,
+    customer_id TEXT,
+    status TEXT,
+    updated_at REAL NOT NULL
+);
 """
 
 _db: Optional[aiosqlite.Connection] = None
@@ -270,3 +278,36 @@ async def list_entitlements(subject_type: str, subject_id: str) -> list[aiosqlit
         (subject_type, subject_id),
     )
     return await cur.fetchall()
+
+
+# ---------- stripe_subscriptions ----------
+
+async def upsert_stripe_subscription(
+    subscription_id: str,
+    guild_id: str,
+    customer_id: Optional[str],
+    status: Optional[str],
+) -> None:
+    """Stripeのsubscription_idとguild_idの対応を保存・更新する（Webhookでのguild逆引き用）。"""
+    await _conn().execute(
+        """INSERT INTO stripe_subscriptions
+               (subscription_id, guild_id, customer_id, status, updated_at)
+           VALUES (?, ?, ?, ?, ?)
+           ON CONFLICT(subscription_id) DO UPDATE SET
+               guild_id=excluded.guild_id,
+               customer_id=excluded.customer_id,
+               status=excluded.status,
+               updated_at=excluded.updated_at""",
+        (subscription_id, guild_id, customer_id, status, time.time()),
+    )
+    await _conn().commit()
+
+
+async def get_guild_by_subscription(subscription_id: str) -> Optional[str]:
+    """subscription_idから対応するguild_idを引く。登録が無ければNone。"""
+    cur = await _conn().execute(
+        "SELECT guild_id FROM stripe_subscriptions WHERE subscription_id = ?",
+        (subscription_id,),
+    )
+    row = await cur.fetchone()
+    return row[0] if row is not None else None

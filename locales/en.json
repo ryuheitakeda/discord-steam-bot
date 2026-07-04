@@ -52,6 +52,9 @@
   "premium.embed_title_free": "Free plan usage",
   "premium.upgrade_field_name": "About Premium",
   "premium.upgrade_field_value": "Subscribe to Premium (monthly) for unlimited use.\nPrice: {price}\n(A payment flow is coming in a future update.)",
+  "premium.subscribe_link": "[💳 Subscribe to Premium now]({url})",
+  "premium.manage_field_name": "Manage subscription",
+  "premium.manage_link": "[⚙️ Manage or cancel here]({url})",
 
   "grant.command_description": "[Owner only] Grant premium to a server",
   "grant.param_days_description": "Number of valid days (unlimited if omitted)",
