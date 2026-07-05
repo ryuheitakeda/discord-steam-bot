@@ -9,7 +9,7 @@
 | 項目 | 内容 |
 |---|---|
 | 販売事業者名 | RyuTekLabo |
-| 運営責任者 | {{運営責任者名 ※公開前に必ず記入}} |
+| 運営責任者 | Ryuhei Takeda |
 | 所在地 | ご請求があり次第、遅滞なく開示いたします。開示をご希望の場合は下記メールアドレスまでご連絡ください。 |
 | 電話番号 | ご請求があり次第、遅滞なく開示いたします。開示をご希望の場合は下記メールアドレスまでご連絡ください。 |
 | メールアドレス | support@ryuteklabo.com |
@@ -49,4 +49,4 @@
 
 This page ("特定商取引法に基づく表記") is a disclosure required specifically under Japan's Act on Specified Commercial Transactions (特定商取引法) for sellers doing commercial transactions with Japanese consumers. It has no direct equivalent requirement outside Japan, so no full English translation is provided; only a summary is given here for reference.
 
-Summary: The Premium plan costs ¥380/month (tax included), billed via Stripe (credit card), auto-renewing monthly, with the plan applied immediately after payment is confirmed. As a digital subscription service, refunds after activation are generally not provided — see `legal/refund.md` for cancellation details. Operator name (RyuTekLabo) and email (support@ryuteklabo.com) are filled in; address and phone number are disclosed on request only (see the operator-only note above regarding this approach for sole proprietors, subject to Japan's Consumer Affairs Agency guidelines). The responsible-person field (`運営責任者`) is still a placeholder and must be filled in with the Operator's real name before this page goes live.
+Summary: The Premium plan costs ¥380/month (tax included), billed via Stripe (credit card), auto-renewing monthly, with the plan applied immediately after payment is confirmed. As a digital subscription service, refunds after activation are generally not provided — see `legal/refund.md` for cancellation details. Operator name (RyuTekLabo) and email (support@ryuteklabo.com) are filled in; address and phone number are disclosed on request only (see the operator-only note above regarding this approach for sole proprietors, subject to Japan's Consumer Affairs Agency guidelines). The responsible person (`運営責任者`) is Ryuhei Takeda.
