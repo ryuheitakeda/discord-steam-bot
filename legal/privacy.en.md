@@ -2,9 +2,9 @@
 
 # Privacy Policy
 
-Last updated: {{YYYY-MM-DD}}
+Last updated: 2026-07-06
 
-{{Operator Name}} ("we", "us", "the Operator") sets out this Privacy Policy ("Policy") describing how user information is handled by the Discord Bot "{{Bot Name}}" (the "Service").
+RyuTekLabo ("we", "us", "the Operator") sets out this Privacy Policy ("Policy") describing how user information is handled by the Discord Bot "今日なんのゲームする？Bot" (the "Service").
 
 ## 1. Information We Collect
 
@@ -38,7 +38,7 @@ Collected information is used solely for the following purposes:
    - **Steam Web API / Steam Store (Valve Corporation)**: sends the SteamID64 to retrieve owned games, profile info, and store game data.
    - **Discord (Discord Inc.)**: used to send/receive command interactions and retrieve VC member information.
    - **Stripe (Stripe, Inc.)**: used to process Premium payments. Name, card details, and billing information are collected and held directly by Stripe; the Operator only retains limited data received from Stripe (subscription ID, customer ID, status, etc.).
-   - **Hosting provider ({{hosting provider name, e.g. home server / VPS provider}})**: hosts the database described above as part of the Service's runtime infrastructure.
+   - **Hosting**: the Service itself (bot process and database) runs on the Operator's home server (Raspberry Pi). This website (landing page, this Policy, etc.) is served as static files via Cloudflare, Inc.'s Cloudflare Pages, which only delivers static content and has no access to the Service's database.
 2. Collected information is not disclosed to any other third party except where required by law.
 
 ## 4. Retention Period
@@ -70,5 +70,5 @@ This Policy may be revised in response to changes in law or in the Service. Mate
 
 For inquiries regarding the handling of personal information, or access/deletion requests, contact:
 
-- Operator: {{Operator Name}}
-- Email: {{email address}}
+- Operator: RyuTekLabo
+- Email: support@ryuteklabo.com

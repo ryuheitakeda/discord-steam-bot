@@ -788,3 +788,151 @@ h2.section-title {
     width: 100%;
   }
 }
+
+/* ---------- legal pages ---------- */
+
+.legal-header {
+  padding: clamp(2.5rem, 6vw, 4rem) 0 1rem;
+}
+
+.legal-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-soft);
+  margin-bottom: 1.2rem;
+}
+
+.legal-back:hover {
+  color: var(--accent-steam-ink);
+}
+
+.legal-title {
+  font-size: clamp(1.7rem, 4vw, 2.3rem);
+  font-weight: 800;
+}
+
+.legal-lang-nav {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.legal-lang-nav a {
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  color: var(--text-soft);
+}
+
+.legal-lang-nav a:hover {
+  color: var(--text);
+  border-color: var(--accent-steam);
+}
+
+.legal-body {
+  max-width: 76ch;
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+.legal-body h2 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-top: 2.6rem;
+  margin-bottom: 0.9rem;
+}
+
+.legal-body h2:first-child {
+  margin-top: 0;
+}
+
+.legal-body h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-top: 1.6rem;
+  margin-bottom: 0.6rem;
+}
+
+.legal-body p {
+  margin-bottom: 1rem;
+  color: var(--text-soft);
+}
+
+.legal-body ul,
+.legal-body ol {
+  margin: 0 0 1rem;
+  padding-left: 1.4rem;
+  color: var(--text-soft);
+}
+
+.legal-body li {
+  margin-bottom: 0.45rem;
+}
+
+.legal-body li > ul,
+.legal-body li > ol {
+  margin-top: 0.45rem;
+  margin-bottom: 0;
+}
+
+.legal-body strong {
+  color: var(--text);
+}
+
+.legal-body code {
+  background: var(--surface-2);
+  border-radius: 6px;
+  padding: 0.1rem 0.4rem;
+  font-size: 0.9em;
+}
+
+.legal-body a {
+  color: var(--accent-steam-ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.legal-note {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  font-size: 0.9rem;
+  color: var(--text-faint);
+  margin-bottom: 2rem;
+}
+
+.legal-table-wrap {
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+
+.legal-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.legal-table th,
+.legal-table td {
+  text-align: left;
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.legal-table th {
+  color: var(--text-faint);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.legal-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2.6rem 0;
+}

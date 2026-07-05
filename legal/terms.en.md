@@ -2,9 +2,9 @@
 
 # Terms of Service
 
-Last updated: {{YYYY-MM-DD}}
+Last updated: 2026-07-06
 
-These Terms of Service ("Terms") govern the use of the Discord Bot "{{Bot Name}}" (the "Service"), provided by {{Operator Name}} ("we", "us", "the Operator"). By adding the Service to a server or running any of its commands, you agree to these Terms.
+These Terms of Service ("Terms") govern the use of the Discord Bot "今日なんのゲームする？Bot" (the "Service"), provided by RyuTekLabo ("we", "us", "the Operator"). By adding the Service to a server or running any of its commands, you agree to these Terms.
 
 ## 1. Service Overview
 
@@ -69,8 +69,8 @@ The Operator may revise these Terms as needed. Revised Terms will be announced w
 ## 9. Governing Law and Jurisdiction
 
 1. These Terms are governed by the laws of Japan.
-2. The {{Court Name, e.g. Tokyo District Court}} shall have exclusive jurisdiction as the court of first instance for any dispute arising from the Service.
+2. The Yokohama District Court (横浜地方裁判所) shall have exclusive jurisdiction as the court of first instance for any dispute arising from the Service.
 
 ## 10. Contact
 
-For questions about these Terms, contact {{email address}}.
+For questions about these Terms, contact support@ryuteklabo.com.

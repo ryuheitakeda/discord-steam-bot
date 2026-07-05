@@ -2,17 +2,17 @@
 
 # 特定商取引法に基づく表記
 
-最終改定日: {{YYYY-MM-DD}}
+最終改定日: 2026-07-06
 
 特定商取引法第11条（通信販売についての広告）に基づき、以下のとおり表示します。
 
 | 項目 | 内容 |
 |---|---|
-| 販売事業者名 | {{販売事業者名}} |
-| 運営責任者 | {{運営責任者}} |
-| 所在地 | {{所在地}}（※下記「運営者向けメモ」参照。開示請求があった場合に遅滞なく開示する運用とする場合は、その旨・請求先を明記すること。要確認） |
-| 電話番号 | {{電話番号}}（※下記「運営者向けメモ」参照。要確認） |
-| メールアドレス | {{メールアドレス}} |
+| 販売事業者名 | RyuTekLabo |
+| 運営責任者 | {{運営責任者名 ※公開前に必ず記入}} |
+| 所在地 | ご請求があり次第、遅滞なく開示いたします。開示をご希望の場合は下記メールアドレスまでご連絡ください。 |
+| 電話番号 | ご請求があり次第、遅滞なく開示いたします。開示をご希望の場合は下記メールアドレスまでご連絡ください。 |
+| メールアドレス | support@ryuteklabo.com |
 | 販売価格 | プレミアムプラン: ¥380／月（税込） |
 | 商品代金以外の必要料金 | 別途費用は発生しません。ただし、インターネット接続料金・通信料金は利用者のご負担となります。 |
 | 支払方法 | クレジットカード決済（Stripe） |
@@ -49,4 +49,4 @@
 
 This page ("特定商取引法に基づく表記") is a disclosure required specifically under Japan's Act on Specified Commercial Transactions (特定商取引法) for sellers doing commercial transactions with Japanese consumers. It has no direct equivalent requirement outside Japan, so no full English translation is provided; only a summary is given here for reference.
 
-Summary: The Premium plan costs ¥380/month (tax included), billed via Stripe (credit card), auto-renewing monthly, with the plan applied immediately after payment is confirmed. As a digital subscription service, refunds after activation are generally not provided — see `legal/refund.md` for cancellation details. Operator name, responsible person, address, and phone number are placeholders (`{{...}}`) to be filled in by the Operator before publishing; see the operator-only note above regarding options for sole proprietors who prefer not to publish a home address/phone number (subject to Japan's Consumer Affairs Agency guidelines — verify current requirements before relying on any specific approach).
+Summary: The Premium plan costs ¥380/month (tax included), billed via Stripe (credit card), auto-renewing monthly, with the plan applied immediately after payment is confirmed. As a digital subscription service, refunds after activation are generally not provided — see `legal/refund.md` for cancellation details. Operator name (RyuTekLabo) and email (support@ryuteklabo.com) are filled in; address and phone number are disclosed on request only (see the operator-only note above regarding this approach for sole proprietors, subject to Japan's Consumer Affairs Agency guidelines). The responsible-person field (`運営責任者`) is still a placeholder and must be filled in with the Operator's real name before this page goes live.

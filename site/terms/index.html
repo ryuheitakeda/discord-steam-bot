@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>利用規約 — 今日なんのゲームする？Bot</title>
+<meta name="description" content="Discord Bot「今日なんのゲームする？Bot」の利用規約（Terms of Service）。日本語・英語を掲載しています。">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">本文へスキップ</a>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html" aria-label="トップへ">
+      <svg class="brand-mark" viewBox="0 0 34 34" role="img" aria-hidden="true">
+        <defs>
+          <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#5865f2"/>
+            <stop offset="1" stop-color="#1b8de0"/>
+          </linearGradient>
+        </defs>
+        <rect width="34" height="34" rx="10" fill="url(#brandGrad)"/>
+        <circle cx="13.5" cy="17" r="3.1" fill="#fff"/>
+        <circle cx="21.5" cy="12.5" r="3.1" fill="#fff" fill-opacity="0.85"/>
+        <circle cx="21.5" cy="21.5" r="3.1" fill="#fff" fill-opacity="0.85"/>
+      </svg>
+      <span class="brand-text">今日なんのゲームする？Bot</span>
+    </a>
+    <div class="nav-actions">
+      <a class="btn btn-ghost btn-sm" href="../index.html">← サイトに戻る</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="section-inner legal-header">
+    <h1 class="legal-title">利用規約</h1>
+    <nav class="legal-lang-nav" aria-label="言語切り替え">
+      <a href="#ja">日本語</a>
+      <a href="#en">English</a>
+    </nav>
+  </div>
+
+  <div class="section-inner legal-body">
+    <p class="legal-note">※本ページはテンプレートに基づき作成されています。公開前に運営者自身で内容をご確認ください。断定的な法律助言を目的としたものではありません。</p>
+
+    <div id="ja">
+      <p><strong>最終改定日: 2026-07-06</strong></p>
+      <p>本利用規約（以下「本規約」）は、RyuTekLabo（以下「運営者」）が提供するDiscord Bot「今日なんのゲームする？Bot」（以下「本サービス」）の利用条件を定めるものです。本サービスをサーバーに追加し、またはコマンドを実行した時点で、利用者は本規約に同意したものとみなします。</p>
+
+      <h2>第1条（サービス概要）</h2>
+      <p>本サービスは、Discordのボイスチャンネル（VC）に参加しているメンバーの間で共通して所持しているSteamゲームを集計し、一緒に遊べるタイトルを提案するBotです。主な機能（コマンド）は以下のとおりです。</p>
+      <ul>
+        <li><code>/link</code> — 自分のSteamプロフィールURL・カスタムURL名・SteamID64を紐づける</li>
+        <li><code>/unlink</code> — 紐づけを解除する</li>
+        <li><code>/profile</code> — 自分または他のメンバーの紐づけ状況を確認する</li>
+        <li><code>/games</code> — 現在参加しているVCメンバーの共通所持ゲーム（マルチプレイ対応タイトル、上位10件）を表示する</li>
+        <li><code>/pick</code> — 上記候補からランダムに1本を提案する</li>
+        <li><code>/premium</code> — 現在の利用状況（無料枠の消費状況）およびプレミアム加入状況を確認する</li>
+      </ul>
+
+      <h2>第2条（利用資格）</h2>
+      <ol>
+        <li>本サービスの利用には、有効なDiscordアカウントおよび本サービスが追加されたDiscordサーバー（以下「対象サーバー」）への参加が必要です。</li>
+        <li><code>/link</code>によりSteamアカウントを紐づける場合、有効なSteamアカウントが必要です。所持ゲーム情報を取得するには、当該Steamアカウントのプライバシー設定で「ゲームの詳細」を公開にしている必要があります。</li>
+        <li>利用者は、DiscordおよびSteamそれぞれの利用規約・ガイドラインを遵守する年齢・資格を満たしている必要があります。</li>
+      </ol>
+
+      <h2>第3条（禁止事項）</h2>
+      <p>利用者は、本サービスの利用にあたり、以下の行為を行ってはなりません。</p>
+      <ol>
+        <li>法令または公序良俗に違反する行為</li>
+        <li>他人のSteamアカウント情報を、当該本人の同意なく<code>/link</code>により紐づける行為（なお、他人のプロフィールURLを貼り付けても紐づく先は当該URLの指すSteamアカウントであり、実行者本人には効果が及ばない仕組みとなっています）</li>
+        <li>本サービスのAPIやコマンドに対する過度なリクエスト、自動化ツールによる連続実行等、システムに過大な負荷をかける行為</li>
+        <li>本サービスの脆弱性を探索・悪用する行為、リバースエンジニアリング等（法令上認められる場合を除く）</li>
+        <li>無料枠の制限を回避する目的での不正な操作（複数サーバーの作成・悪用等）</li>
+        <li>その他、運営者が不適切と判断する行為</li>
+      </ol>
+
+      <h2>第4条（Steam・Discord各規約の遵守）</h2>
+      <ol>
+        <li>本サービスはSteam Web APIおよびSteamストアの情報を利用します。利用者は<a href="https://store.steampowered.com/subscriber_agreement/">Steam利用規約</a>を遵守するものとします。</li>
+        <li>本サービスはDiscordのBot機能を利用して提供されます。利用者は<a href="https://discord.com/terms">Discord利用規約</a>および<a href="https://discord.com/guidelines">Discordコミュニティガイドライン</a>を遵守するものとします。</li>
+        <li>本サービスは、Valve Corporation（Steam）およびDiscord Inc.のいずれとも公式な提携関係にありません。</li>
+      </ol>
+
+      <h2>第5条（料金・課金）</h2>
+      <ol>
+        <li>本サービスには無料枠とプレミアムプランがあります。</li>
+        <li><strong>無料枠</strong>: 1つのDiscordサーバーあたり、1日3回・1か月60回までコマンド（<code>/games</code> <code>/pick</code>）を利用できます（両方の上限を満たす必要があります）。この上限はサーバー単位で共有され、サーバー内の利用者全員の利用回数が合算されます。</li>
+        <li><strong>プレミアムプラン</strong>: 月額¥380（税込）で、対象サーバーにおける利用回数制限が撤廃されます。プレミアムはサーバー単位（Discordサーバー全体）に付与されるものであり、決済を行った特定の利用者個人に付与されるものではありません。</li>
+        <li>決済は<strong>Stripe</strong>を通じた運営者からの直接販売により行われます。Discord公式の課金機能（Discord Monetization等）は利用していません。</li>
+        <li>プレミアムプランは月単位で自動更新されるサブスクリプション契約です。解約しない限り、契約は次の請求期間まで自動的に継続します。解約方法は<a href="/refund">返金・キャンセルポリシー</a>を参照してください。</li>
+        <li>料金は予告のうえ改定される場合があります。改定後の料金は、次回更新以降に適用されます。</li>
+      </ol>
+
+      <h2>第6条（無保証・免責事項）</h2>
+      <ol>
+        <li>本サービスは現状有姿（as-is）で提供され、その完全性、正確性、有用性、特定目的への適合性について、明示・黙示を問わず一切保証しません。</li>
+        <li>Steam所持ゲーム情報・マルチプレイ判定情報は、Steam Web APIおよびSteamストアの非公式情報に基づくものであり、その正確性・最新性を保証するものではありません。</li>
+        <li>本サービスの利用、または利用不能によって利用者に生じた損害について、運営者は故意または重過失がある場合を除き、責任を負わないものとします。運営者が損害賠償責任を負う場合であっても、その賠償額は利用者が過去3か月間に運営者に支払った金額を上限とします。</li>
+        <li>Discord・Steam・Stripeその他の第三者サービスの障害、仕様変更、利用停止等により本サービスが提供できなくなった場合について、運営者は責任を負いません。</li>
+      </ol>
+
+      <h2>第7条（サービスの変更・中断・終了）</h2>
+      <ol>
+        <li>運営者は、利用者への事前の通知なく、本サービスの内容を変更し、または提供を中断・終了することができます。</li>
+        <li>運営者は、システムの保守、障害、天災その他やむを得ない事由がある場合、利用者への事前通知なく本サービスの全部または一部を停止することができます。</li>
+        <li>本サービスが終了する場合、既にプレミアムプランに加入している対象サーバーの取扱い（日割り返金の要否等）については、<a href="/refund">返金・キャンセルポリシー</a>および終了時の告知に従います。</li>
+      </ol>
+
+      <h2>第8条（本規約の変更）</h2>
+      <p>運営者は、必要と判断した場合、本規約を変更することができます。変更後の規約は、本サービス内での告知またはDiscordサーバー・Webサイト等での掲示により周知し、周知後の本サービスの利用をもって変更に同意したものとみなします。</p>
+
+      <h2>第9条（準拠法・裁判管轄）</h2>
+      <ol>
+        <li>本規約の準拠法は日本法とします。</li>
+        <li>本サービスに関して利用者と運営者との間に紛争が生じた場合、横浜地方裁判所を第一審の専属的合意管轄裁判所とします。</li>
+      </ol>
+
+      <h2>第10条（お問い合わせ）</h2>
+      <p>本規約に関するお問い合わせは、<a href="mailto:support@ryuteklabo.com">support@ryuteklabo.com</a>までご連絡ください。</p>
+    </div>
+
+    <hr class="legal-divider" id="en">
+
+    <div>
+      <h2>English Version</h2>
+      <p class="legal-note">The Japanese version above is the primary/authoritative document; this is a convenience translation. This is not intended as definitive legal advice.</p>
+      <p><strong>Last updated: 2026-07-06</strong></p>
+      <p>These Terms of Service ("Terms") govern the use of the Discord Bot "今日なんのゲームする？Bot" (the "Service"), provided by RyuTekLabo ("we", "us", "the Operator"). By adding the Service to a server or running any of its commands, you agree to these Terms.</p>
+
+      <h3>1. Service Overview</h3>
+      <p>The Service scans the voice channel (VC) you are in on Discord, finds Steam games commonly owned among the members present, and suggests titles you can play together. Main commands:</p>
+      <ul>
+        <li><code>/link</code> — Link your Steam profile URL, custom URL name, or SteamID64</li>
+        <li><code>/unlink</code> — Remove the link</li>
+        <li><code>/profile</code> — Check your own or another member's link status</li>
+        <li><code>/games</code> — Show up to the top 10 multiplayer-capable games commonly owned by the current VC members</li>
+        <li><code>/pick</code> — Randomly suggest one title from the candidates above</li>
+        <li><code>/premium</code> — Check current free-tier usage and premium subscription status</li>
+      </ul>
+
+      <h3>2. Eligibility</h3>
+      <ol>
+        <li>Use of the Service requires a valid Discord account and membership in a Discord server where the Service has been added (the "Server").</li>
+        <li>Linking a Steam account via <code>/link</code> requires a valid Steam account. To fetch your owned-games list, that Steam account's privacy setting for "Game details" must be set to Public.</li>
+        <li>You must meet the age and eligibility requirements of both Discord's and Steam's own terms of service/guidelines.</li>
+      </ol>
+
+      <h3>3. Prohibited Conduct</h3>
+      <p>You must not:</p>
+      <ol>
+        <li>Violate any applicable law or public order and morals.</li>
+        <li>Link another person's Steam account via <code>/link</code> without their consent (note: pasting someone else's profile URL only links that URL's Steam account — it does not benefit or affect the person who pasted it, by design).</li>
+        <li>Send excessive requests, or use automation to repeatedly invoke commands, in a way that places undue load on the Service.</li>
+        <li>Probe for or exploit vulnerabilities in the Service, or reverse-engineer it, except where permitted by law.</li>
+        <li>Attempt to circumvent the free-tier usage limits through improper means (e.g., abusive creation of multiple servers).</li>
+        <li>Engage in any other conduct the Operator deems inappropriate.</li>
+      </ol>
+
+      <h3>4. Compliance with Steam and Discord Terms</h3>
+      <ol>
+        <li>The Service uses the Steam Web API and Steam Store data. You must comply with the <a href="https://store.steampowered.com/subscriber_agreement/">Steam Subscriber Agreement</a>.</li>
+        <li>The Service is delivered via Discord's bot platform. You must comply with the <a href="https://discord.com/terms">Discord Terms of Service</a> and <a href="https://discord.com/guidelines">Discord Community Guidelines</a>.</li>
+        <li>The Service is not officially affiliated with Valve Corporation (Steam) or Discord Inc.</li>
+      </ol>
+
+      <h3>5. Fees and Billing</h3>
+      <ol>
+        <li>The Service offers a free tier and a Premium plan.</li>
+        <li><strong>Free tier</strong>: each Discord server may use the <code>/games</code> and <code>/pick</code> commands up to 3 times per day and 60 times per month (both limits apply, shared and pooled across all members of that server).</li>
+        <li><strong>Premium plan</strong>: ¥380/month (tax included) removes the usage limit for the subscribed server. Premium is granted at the server (guild) level as a whole — not to the individual member who completes payment.</li>
+        <li>Payment is processed via <strong>Stripe</strong>, sold directly by the Operator. Discord's built-in monetization features are not used.</li>
+        <li>Premium is a monthly auto-renewing subscription. Unless cancelled, it automatically continues into the next billing period. See the <a href="/refund">Refund Policy</a> for cancellation.</li>
+        <li>Fees may change with prior notice; changes take effect from the next renewal onward.</li>
+      </ol>
+
+      <h3>6. Disclaimer of Warranties</h3>
+      <ol>
+        <li>The Service is provided "as is," with no warranty, express or implied, as to completeness, accuracy, usefulness, or fitness for a particular purpose.</li>
+        <li>Owned-game and multiplayer-classification data is derived from the Steam Web API and unofficial Steam Store data; its accuracy or currency is not guaranteed.</li>
+        <li>Except in cases of willful misconduct or gross negligence by the Operator, the Operator is not liable for damages arising from use of, or inability to use, the Service. Where the Operator is liable, total liability is capped at the amount you paid the Operator in the preceding 3 months.</li>
+        <li>The Operator is not responsible for outages caused by third-party services (Discord, Steam, Stripe, hosting providers, etc.).</li>
+      </ol>
+
+      <h3>7. Changes, Suspension, and Termination of the Service</h3>
+      <ol>
+        <li>The Operator may change, suspend, or discontinue the Service without prior notice.</li>
+        <li>The Operator may suspend the Service in whole or in part for maintenance, failures, force majeure, or other unavoidable reasons.</li>
+        <li>If the Service is discontinued, handling of servers with active Premium subscriptions (including any prorated refunds) will follow the <a href="/refund">Refund Policy</a> and any termination notice issued at that time.</li>
+      </ol>
+
+      <h3>8. Changes to These Terms</h3>
+      <p>The Operator may revise these Terms as needed. Revised Terms will be announced within the Service, on the relevant Discord server, or on the website; continued use after such notice constitutes acceptance.</p>
+
+      <h3>9. Governing Law and Jurisdiction</h3>
+      <ol>
+        <li>These Terms are governed by the laws of Japan.</li>
+        <li>The Yokohama District Court (横浜地方裁判所) shall have exclusive jurisdiction as the court of first instance for any dispute arising from the Service.</li>
+      </ol>
+
+      <h3>10. Contact</h3>
+      <p>For questions about these Terms, contact <a href="mailto:support@ryuteklabo.com">support@ryuteklabo.com</a>.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <p class="footer-brand">今日なんのゲームする？Bot</p>
+        <p>VCメンバーの共通所持ゲームから、今日遊べるタイトルを提案します。</p>
+      </div>
+      <nav class="footer-links" aria-label="法的情報">
+        <a href="/terms">利用規約</a>
+        <a href="/privacy">プライバシーポリシー</a>
+        <a href="/tokushoho">特定商取引法に基づく表記</a>
+        <a href="/refund">返金ポリシー</a>
+        <a href="mailto:support@ryuteklabo.com">お問い合わせ</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 RyuTekLabo</p>
+      <p class="footer-disclaimer">Steamは Valve Corporation の商標です。当サービスはValve社およびDiscord Inc.の公式サービスではありません。</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

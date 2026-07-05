@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>プライバシーポリシー — 今日なんのゲームする？Bot</title>
+<meta name="description" content="Discord Bot「今日なんのゲームする？Bot」のプライバシーポリシー（Privacy Policy）。日本語・英語を掲載しています。">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">本文へスキップ</a>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html" aria-label="トップへ">
+      <svg class="brand-mark" viewBox="0 0 34 34" role="img" aria-hidden="true">
+        <defs>
+          <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#5865f2"/>
+            <stop offset="1" stop-color="#1b8de0"/>
+          </linearGradient>
+        </defs>
+        <rect width="34" height="34" rx="10" fill="url(#brandGrad)"/>
+        <circle cx="13.5" cy="17" r="3.1" fill="#fff"/>
+        <circle cx="21.5" cy="12.5" r="3.1" fill="#fff" fill-opacity="0.85"/>
+        <circle cx="21.5" cy="21.5" r="3.1" fill="#fff" fill-opacity="0.85"/>
+      </svg>
+      <span class="brand-text">今日なんのゲームする？Bot</span>
+    </a>
+    <div class="nav-actions">
+      <a class="btn btn-ghost btn-sm" href="../index.html">← サイトに戻る</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="section-inner legal-header">
+    <h1 class="legal-title">プライバシーポリシー</h1>
+    <nav class="legal-lang-nav" aria-label="言語切り替え">
+      <a href="#ja">日本語</a>
+      <a href="#en">English</a>
+    </nav>
+  </div>
+
+  <div class="section-inner legal-body">
+    <p class="legal-note">※本ページはテンプレートに基づき作成されています。公開前に運営者自身で内容をご確認ください。断定的な法律助言を目的としたものではありません。</p>
+
+    <div id="ja">
+      <p><strong>最終改定日: 2026-07-06</strong></p>
+      <p>RyuTekLabo（以下「運営者」）は、Discord Bot「今日なんのゲームする？Bot」（以下「本サービス」）における利用者情報の取扱いについて、以下のとおりプライバシーポリシー（以下「本ポリシー」）を定めます。</p>
+
+      <h2>1. 収集する情報</h2>
+      <p>本サービスは、機能提供に必要な範囲で以下の情報を収集・保存します（実際のデータベーススキーマに基づく記載です）。</p>
+      <div class="legal-table-wrap">
+        <table class="legal-table">
+          <thead><tr><th>カテゴリ</th><th>具体的な項目</th><th>取得のきっかけ・保存先</th></tr></thead>
+          <tbody>
+            <tr><td>Discord関連情報</td><td>Discordユーザーの内部ID（スノーフレークID）、Discordサーバー（ギルド）の内部ID</td><td>コマンド実行時にDiscord APIから取得。<code>users</code>テーブル・<code>usage_log</code>テーブル・<code>entitlements</code>テーブル等に保存</td></tr>
+            <tr><td>Steamアカウント情報</td><td>入力されたSteamプロフィールURL/カスタムURL名から解決したSteamID64、Steam表示名（persona name）、紐づけ日時</td><td><code>/link</code>実行時に取得。<code>users</code>テーブルに保存</td></tr>
+            <tr><td>Steam所持ゲーム情報</td><td>所持ゲームのアプリID・タイトル名・累計プレイ時間・直近2週間のプレイ時間</td><td><code>/games</code> <code>/pick</code>実行時にSteam Web APIから取得しキャッシュ。<code>owned_games</code>テーブル（SteamID単位）に保存、1時間で有効期限切れ（次回取得まで残存する場合あり）</td></tr>
+            <tr><td>ゲームのメタ情報</td><td>Steamストア上のアプリID・タイトル名・マルチプレイ対応可否</td><td>Steamストアの情報から取得しキャッシュ。<code>app_categories</code>テーブルに保存（利用者個人に紐づく情報ではありません）、30日で有効期限切れ</td></tr>
+            <tr><td>利用ログ</td><td>サーバーID・DiscordユーザーID・実行コマンド名・実行日時</td><td><code>/games</code> <code>/pick</code>の実行時に無料枠の消費状況を管理するため記録。<code>usage_log</code>テーブルに保存</td></tr>
+            <tr><td>権利付与（entitlement）情報</td><td>付与対象（通常はサーバー単位）、プラン種別、付与元（手動／Stripe）、有効期限</td><td>プレミアム判定のため保存。<code>entitlements</code>テーブルに保存</td></tr>
+            <tr><td>Stripe決済関連情報</td><td>StripeサブスクリプションID、対応するDiscordサーバーID、Stripe顧客ID、サブスクリプションのステータス</td><td>Stripe Webhook受信時に保存。<code>stripe_subscriptions</code>テーブルに保存。<strong>カード番号・氏名・請求先住所・メールアドレス等の決済情報そのものは本サービスのサーバーには保存されず、決済代行事業者であるStripeが保持・管理します</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>本サービスはDiscordの「サーバーメンバー情報」インテント（Privileged Gateway Intent）を利用し、コマンド実行時にボイスチャンネル参加メンバーの一覧を取得しますが、これは<code>/games</code> <code>/pick</code>実行の都度その場で処理されるものであり、参加メンバーの一覧自体をデータベースに保存することはありません（各メンバーの紐づけ状況を<code>users</code>テーブルから参照するのみです）。</p>
+
+      <h2>2. 利用目的</h2>
+      <p>収集した情報は、以下の目的でのみ利用します。</p>
+      <ol>
+        <li>Steamアカウントの紐づけ・紐づけ状況の表示（<code>/link</code> <code>/unlink</code> <code>/profile</code>）</li>
+        <li>VCメンバー間の共通所持ゲームの算出およびマルチプレイ対応タイトルの提案（<code>/games</code> <code>/pick</code>）</li>
+        <li>無料枠（1日3回・1か月60回、サーバー単位）の消費状況の管理およびプレミアムプランとの判別（<code>/premium</code>）</li>
+        <li>プレミアムプランの決済状態の管理（Stripe Webhookによるサブスクリプション状態の反映）</li>
+        <li>不正利用の防止、障害対応、サービス改善のための分析</li>
+      </ol>
+
+      <h2>3. 第三者提供・委託</h2>
+      <ol>
+        <li>本サービスは、以下の外部サービスに必要な範囲で情報を送信します。それぞれの外部サービスにおける情報の取扱いは、各社のプライバシーポリシーに従います。
+          <ul>
+            <li><strong>Steam Web API / Steamストア（Valve Corporation）</strong>: SteamID64を送信し、所持ゲーム・プロフィール情報・ストアのゲーム情報を取得します。</li>
+            <li><strong>Discord（Discord Inc.）</strong>: コマンド応答の送受信、VCメンバー情報の取得のために利用します。</li>
+            <li><strong>Stripe（Stripe, Inc.）</strong>: プレミアムプランの決済処理のために利用します。決済に伴う氏名・カード情報・請求先情報等はStripeが直接収集・保持し、運営者はStripeから受け取るサブスクリプションID・顧客ID・ステータス等の限定的な情報のみを保持します。</li>
+            <li><strong>ホスティング事業者</strong>: 本サービス（Bot本体・データベース）は運営者の自宅サーバー（Raspberry Pi）上で稼働しています。また、本ウェブサイト（ランディングページ・本ポリシー等の静的ページ）はCloudflare, Inc.のCloudflare Pagesを通じて配信されます（同社は静的ファイルの配信のみを行い、本サービスのデータベースにはアクセスしません）。</li>
+          </ul>
+        </li>
+        <li>法令に基づく開示請求があった場合を除き、収集した情報を上記以外の第三者に提供することはありません。</li>
+      </ol>
+
+      <h2>4. 保存期間</h2>
+      <ol>
+        <li><code>users</code>テーブルの情報（SteamIDの紐づけ等）は、利用者が<code>/unlink</code>を実行するまで、または運営者への削除依頼があるまで保存されます。</li>
+        <li><code>owned_games</code>（所持ゲームキャッシュ）は1時間で鮮度が失効しますが、次回<code>/games</code> <code>/pick</code>実行まで削除されずデータベースに残存する場合があります。<code>/unlink</code>を実行しても、SteamID単位で保存されているこのキャッシュ自体は自動削除されない場合があります。完全な削除をご希望の場合は下記お問い合わせ窓口までご連絡ください。</li>
+        <li><code>usage_log</code>（利用ログ）は無料枠管理のため一定期間保存されます。運営者は定期的な削除・匿名化に努めますが、現時点で自動削除の仕組みは実装されていません。</li>
+        <li><code>entitlements</code>・<code>stripe_subscriptions</code>（プレミアム権利・決済連携情報）は、契約終了後も、会計処理・不正防止等の目的で合理的な期間保存する場合があります。</li>
+      </ol>
+
+      <h2>5. 利用者の権利</h2>
+      <ol>
+        <li><strong>紐づけ解除・削除</strong>: <code>/unlink</code>コマンドにより、いつでも自身のSteamアカウント紐づけ情報（<code>users</code>テーブルの該当行）を削除できます。</li>
+        <li><strong>開示・削除請求</strong>: 上記コマンドで削除されないデータ（利用ログ・キャッシュされたゲーム情報等）を含め、自身に関する情報の開示・削除・訂正をご希望の場合は、下記お問い合わせ窓口までご連絡ください。合理的な範囲で対応します。</li>
+        <li><strong>プレミアム解約</strong>: プレミアムプランの解約は<a href="/refund">返金・キャンセルポリシー</a>記載の方法（Stripeカスタマーポータル等）により行うことができます。</li>
+      </ol>
+
+      <h2>6. Cookie・類似技術</h2>
+      <p>本サービス自体（Discord Bot）はCookieを使用しません。ただし、Stripeの決済ページやランディングページ（LP）等、運営者が別途提供するWebページを経由する場合、当該ページ側でCookieや類似技術が利用されることがあります。詳細は当該ページの案内をご確認ください。</p>
+
+      <h2>7. 未成年者の利用</h2>
+      <p>本サービスの利用には、Discordの利用規約上必要とされる年齢要件を満たしている必要があります。未成年者が決済を伴うプレミアムプランを利用する場合は、親権者等の同意を得たうえでご利用ください。</p>
+
+      <h2>8. 本ポリシーの改定</h2>
+      <p>本ポリシーは、法令の変更やサービス内容の変更に応じて改定される場合があります。重要な変更がある場合は、本サービス内またはWebサイト等で告知します。</p>
+
+      <h2>9. お問い合わせ窓口</h2>
+      <p>個人情報の取扱いに関するお問い合わせ、開示・削除請求は、以下までご連絡ください。</p>
+      <ul>
+        <li>運営者: RyuTekLabo</li>
+        <li>連絡先メールアドレス: <a href="mailto:support@ryuteklabo.com">support@ryuteklabo.com</a></li>
+      </ul>
+    </div>
+
+    <hr class="legal-divider" id="en">
+
+    <div>
+      <h2>English Version</h2>
+      <p class="legal-note">The Japanese version above is the primary/authoritative document; this is a convenience translation. This is not intended as definitive legal advice.</p>
+      <p><strong>Last updated: 2026-07-06</strong></p>
+      <p>RyuTekLabo ("we", "us", "the Operator") sets out this Privacy Policy ("Policy") describing how user information is handled by the Discord Bot "今日なんのゲームする？Bot" (the "Service").</p>
+
+      <h3>1. Information We Collect</h3>
+      <p>The Service collects and stores the following information, only as needed to provide its functionality (this reflects the actual database schema):</p>
+      <div class="legal-table-wrap">
+        <table class="legal-table">
+          <thead><tr><th>Category</th><th>Specific items</th><th>Trigger / storage</th></tr></thead>
+          <tbody>
+            <tr><td>Discord-related information</td><td>Internal Discord user ID (snowflake), internal Discord server (guild) ID</td><td>Retrieved from the Discord API when commands run; stored in the <code>users</code>, <code>usage_log</code>, and <code>entitlements</code> tables</td></tr>
+            <tr><td>Steam account information</td><td>SteamID64 resolved from the profile URL/custom URL name you supply, Steam display name (persona name), link timestamp</td><td>Collected when running <code>/link</code>; stored in the <code>users</code> table</td></tr>
+            <tr><td>Steam owned-games information</td><td>Owned games' app IDs, titles, total playtime, and playtime in the last 2 weeks</td><td>Fetched from the Steam Web API and cached when running <code>/games</code>/<code>/pick</code>; stored in the <code>owned_games</code> table (keyed by Steam ID), expires after 1 hour (may persist in storage until the next fetch)</td></tr>
+            <tr><td>Game metadata</td><td>App IDs, titles, and multiplayer classification from the Steam Store</td><td>Cached from Steam Store data; stored in the <code>app_categories</code> table (not tied to any individual user), expires after 30 days</td></tr>
+            <tr><td>Usage logs</td><td>Server ID, Discord user ID, command name, timestamp</td><td>Recorded each time <code>/games</code>/<code>/pick</code> runs, to track free-tier consumption; stored in the <code>usage_log</code> table</td></tr>
+            <tr><td>Entitlement information</td><td>Subject (typically the server), plan type, source (manual or Stripe), expiration</td><td>Stored to determine premium status; stored in the <code>entitlements</code> table</td></tr>
+            <tr><td>Stripe billing-related information</td><td>Stripe subscription ID, corresponding Discord server ID, Stripe customer ID, subscription status</td><td>Stored upon receiving Stripe webhooks; stored in the <code>stripe_subscriptions</code> table. <strong>Actual payment details — card number, name, billing address, email, etc. — are not stored on the Service's servers; they are collected and held by Stripe, our payment processor</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The Service uses Discord's "Server Members" privileged gateway intent to fetch the list of voice-channel members when a command runs. This is processed on the fly each time <code>/games</code>/<code>/pick</code> is invoked and the member list itself is not stored in the database (only each member's link status is looked up from the <code>users</code> table).</p>
+
+      <h3>2. Purpose of Use</h3>
+      <p>Collected information is used solely for the following purposes:</p>
+      <ol>
+        <li>Linking Steam accounts and displaying link status (<code>/link</code>, <code>/unlink</code>, <code>/profile</code>)</li>
+        <li>Computing commonly-owned games among VC members and suggesting multiplayer titles (<code>/games</code>, <code>/pick</code>)</li>
+        <li>Tracking free-tier consumption (3/day and 60/month, per server) and distinguishing premium status (<code>/premium</code>)</li>
+        <li>Managing Premium subscription state via Stripe webhooks</li>
+        <li>Preventing abuse, handling incidents, and improving the Service</li>
+      </ol>
+
+      <h3>3. Third-Party Disclosure and Subprocessors</h3>
+      <ol>
+        <li>The Service sends information, as needed, to the following external services. Handling of information by each is governed by that party's own privacy policy.
+          <ul>
+            <li><strong>Steam Web API / Steam Store (Valve Corporation)</strong>: sends the SteamID64 to retrieve owned games, profile info, and store game data.</li>
+            <li><strong>Discord (Discord Inc.)</strong>: used to send/receive command interactions and retrieve VC member information.</li>
+            <li><strong>Stripe (Stripe, Inc.)</strong>: used to process Premium payments. Name, card details, and billing information are collected and held directly by Stripe; the Operator only retains limited data received from Stripe (subscription ID, customer ID, status, etc.).</li>
+            <li><strong>Hosting</strong>: the Service itself (bot process and database) runs on the Operator's home server (Raspberry Pi). This website (landing page, this Policy, etc.) is served as static files via Cloudflare, Inc.'s Cloudflare Pages, which only delivers static content and has no access to the Service's database.</li>
+          </ul>
+        </li>
+        <li>Collected information is not disclosed to any other third party except where required by law.</li>
+      </ol>
+
+      <h3>4. Retention Period</h3>
+      <ol>
+        <li>Information in the <code>users</code> table (Steam account linkage, etc.) is retained until you run <code>/unlink</code>, or until you request deletion from the Operator.</li>
+        <li>The <code>owned_games</code> cache goes stale after 1 hour but may remain in the database, un-deleted, until the next <code>/games</code>/<code>/pick</code> run. Running <code>/unlink</code> does not necessarily delete this Steam-ID-keyed cache automatically. If you want it fully deleted, contact us as described below.</li>
+        <li><code>usage_log</code> (usage history) is retained for free-tier management purposes. The Operator aims to periodically delete or anonymize this data, but no automatic deletion mechanism is currently implemented.</li>
+        <li><code>entitlements</code> and <code>stripe_subscriptions</code> (premium entitlement and billing linkage data) may be retained for a reasonable period after contract termination for accounting and anti-fraud purposes.</li>
+      </ol>
+
+      <h3>5. Your Rights</h3>
+      <ol>
+        <li><strong>Unlinking / deletion</strong>: you may delete your own Steam account link (the corresponding row in the <code>users</code> table) at any time via <code>/unlink</code>.</li>
+        <li><strong>Access / deletion requests</strong>: for data not removed by the above command (e.g., usage logs, cached game data), you may request access, deletion, or correction by contacting us below. We will respond within a reasonable scope.</li>
+        <li><strong>Cancelling Premium</strong>: see the <a href="/refund">Refund Policy</a> for how to cancel (e.g., via the Stripe Customer Portal).</li>
+      </ol>
+
+      <h3>6. Cookies and Similar Technologies</h3>
+      <p>The Service itself (a Discord Bot) does not use cookies. However, if you go through a separately provided web page operated by the Operator — such as a Stripe checkout page or a landing page — that page may use cookies or similar technologies. See that page's own notice for details.</p>
+
+      <h3>7. Use by Minors</h3>
+      <p>Use of the Service requires meeting Discord's own age requirements. If a minor uses the paid Premium plan, please obtain parental/guardian consent first.</p>
+
+      <h3>8. Changes to This Policy</h3>
+      <p>This Policy may be revised in response to changes in law or in the Service. Material changes will be announced within the Service or on the website.</p>
+
+      <h3>9. Contact</h3>
+      <p>For inquiries regarding the handling of personal information, or access/deletion requests, contact:</p>
+      <ul>
+        <li>Operator: RyuTekLabo</li>
+        <li>Email: <a href="mailto:support@ryuteklabo.com">support@ryuteklabo.com</a></li>
+      </ul>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <p class="footer-brand">今日なんのゲームする？Bot</p>
+        <p>VCメンバーの共通所持ゲームから、今日遊べるタイトルを提案します。</p>
+      </div>
+      <nav class="footer-links" aria-label="法的情報">
+        <a href="/terms">利用規約</a>
+        <a href="/privacy">プライバシーポリシー</a>
+        <a href="/tokushoho">特定商取引法に基づく表記</a>
+        <a href="/refund">返金ポリシー</a>
+        <a href="mailto:support@ryuteklabo.com">お問い合わせ</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 RyuTekLabo</p>
+      <p class="footer-disclaimer">Steamは Valve Corporation の商標です。当サービスはValve社およびDiscord Inc.の公式サービスではありません。</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

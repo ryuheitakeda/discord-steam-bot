@@ -2,9 +2,9 @@
 
 # 返金・キャンセルポリシー
 
-最終改定日: {{YYYY-MM-DD}}
+最終改定日: 2026-07-06
 
-本ページは、Discord Bot「{{Bot名}}」（以下「本サービス」）のプレミアムプラン（月額¥380・税込、Stripe決済）に関する解約・返金の取扱いを定めるものです。
+本ページは、Discord Bot「今日なんのゲームする？Bot」（以下「本サービス」）のプレミアムプラン（月額¥380・税込、Stripe決済）に関する解約・返金の取扱いを定めるものです。
 
 ## 1. 解約方法
 
@@ -42,8 +42,8 @@
 
 解約・返金に関するお問い合わせは、以下までご連絡ください。
 
-- 運営者: {{販売事業者名}}
-- 連絡先メールアドレス: {{メールアドレス}}
+- 運営者: RyuTekLabo
+- 連絡先メールアドレス: support@ryuteklabo.com
 
 ---
 
@@ -51,9 +51,9 @@
 
 ### Refund and Cancellation Policy
 
-Last updated: {{YYYY-MM-DD}}
+Last updated: 2026-07-06
 
-This page describes cancellation and refund handling for the Premium plan (¥380/month, tax included, billed via Stripe) of the Discord Bot "{{Bot Name}}" (the "Service").
+This page describes cancellation and refund handling for the Premium plan (¥380/month, tax included, billed via Stripe) of the Discord Bot "今日なんのゲームする？Bot" (the "Service").
 
 **1. How to cancel.** You can cancel Premium yourself via the **Stripe Customer Portal**. A link to the portal is shown in the response to the `/premium` command while subscribed. If you can't find or access the link, contact us below. Once cancellation is processed, unlimited usage ends at the close of the current billing period; the server then reverts to the free tier (3/day, 60/month). You retain Premium benefits through the end of the period you already paid for.
 
@@ -63,4 +63,4 @@ This page describes cancellation and refund handling for the Premium plan (¥380
 
 **4. Double charges or service failures.** We will review and provide an appropriate remedy (refund, reversing an erroneous charge, etc.) on a case-by-case basis for: (a) accidental double charges caused by a system or payment-processing glitch; (b) continued billing after you successfully cancelled, due to a system bug; or (c) other failures to deliver the service attributable to the Operator. Please contact us with your server name/ID, the email or Stripe receipt number used for payment (if known), and details of what happened.
 
-**5. Contact:** Operator: {{Operator Name}} / Email: {{email address}}
+**5. Contact:** Operator: RyuTekLabo / Email: support@ryuteklabo.com
