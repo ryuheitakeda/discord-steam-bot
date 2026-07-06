@@ -7,7 +7,10 @@
 #   3. /etc/systemd/system/litestream.service に配置
 #   4. systemctl daemon-reload && systemctl enable --now litestream.service
 #
-# 前提: {{BOT_DIR}}/deploy/litestream.yml が設置済みで、R2の接続情報が埋まっていること
+# 前提:
+#   - {{BOT_DIR}}/deploy/litestream.yml が設置済みで、R2の接続情報（bucket/endpoint）が埋まっていること
+#   - {{BOT_DIR}}/deploy/litestream.env に R2_ACCESS_KEY_ID / R2_SECRET_ACCESS_KEY を書き、
+#     chmod 600 で権限を絞っておくこと（このファイルはgit管理下に置かない）
 
 [Unit]
 Description=Litestream replication (bot.db -> Cloudflare R2)
@@ -21,6 +24,7 @@ Before=discord-steam-bot.service
 Type=simple
 User=ryu
 Group=ryu
+EnvironmentFile={{BOT_DIR}}/deploy/litestream.env
 ExecStart=/usr/bin/litestream replicate -config {{BOT_DIR}}/deploy/litestream.yml
 Restart=always
 RestartSec=5

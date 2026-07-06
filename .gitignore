@@ -1,4 +1,5 @@
 .env
+deploy/litestream.env
 bot.db
 __pycache__/
 *.pyc

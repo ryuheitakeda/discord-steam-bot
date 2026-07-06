@@ -104,9 +104,11 @@ Stripe Webhookを外部（Stripe）から受けられるようにするには`de
 ### 導入
 
 1. [Litestreamをインストール](https://litestream.io/install/)（Raspberry Pi向けのARMビルドあり）
-2. `deploy/litestream.yml`の`{{BOT_DIR}}` `{{R2_BUCKET}}` `{{R2_ENDPOINT}}` `{{R2_ACCESS_KEY_ID}}` `{{R2_SECRET_ACCESS_KEY}}`を実際の値に置換し、`{{BOT_DIR}}/deploy/litestream.yml`に配置する
-3. `deploy/litestream.service`の`{{BOT_DIR}}`を置換し、`/etc/systemd/system/litestream.service`に配置する
-4. 初回レプリケーションを手動で確認してから常駐化する
+2. `deploy/litestream.yml`の`{{BOT_DIR}}` `{{R2_BUCKET}}` `{{R2_ENDPOINT}}`を実際の値に置換し、`{{BOT_DIR}}/deploy/litestream.yml`に配置する
+   （`access-key-id` / `secret-access-key`は`${R2_ACCESS_KEY_ID}` / `${R2_SECRET_ACCESS_KEY}`のまま、環境変数展開に任せる）
+3. `deploy/litestream.env.example`を`{{BOT_DIR}}/deploy/litestream.env`としてコピーし、R2 APIトークンの`R2_ACCESS_KEY_ID` / `R2_SECRET_ACCESS_KEY`を実値に置換したうえで`chmod 600`する（このファイルはgit管理下に置かない）
+4. `deploy/litestream.service`の`{{BOT_DIR}}`を置換し、`/etc/systemd/system/litestream.service`に配置する
+5. 初回レプリケーションを手動で確認してから常駐化する
 
    ```bash
    # 動作確認（Ctrl+Cで停止）

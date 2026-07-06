@@ -132,12 +132,16 @@ The config template is `deploy/litestream.yml`, and the systemd unit to run it a
 ### Setup
 
 1. [Install Litestream](https://litestream.io/install/) (ARM builds are available for Raspberry Pi)
-2. Replace `{{BOT_DIR}}`, `{{R2_BUCKET}}`, `{{R2_ENDPOINT}}`, `{{R2_ACCESS_KEY_ID}}`,
-   `{{R2_SECRET_ACCESS_KEY}}` in `deploy/litestream.yml` with real values, and place it at
-   `{{BOT_DIR}}/deploy/litestream.yml`
-3. Replace `{{BOT_DIR}}` in `deploy/litestream.service` and place it at
+2. Replace `{{BOT_DIR}}`, `{{R2_BUCKET}}`, `{{R2_ENDPOINT}}` in `deploy/litestream.yml` with real
+   values, and place it at `{{BOT_DIR}}/deploy/litestream.yml`
+   (leave `access-key-id` / `secret-access-key` as `${R2_ACCESS_KEY_ID}` / `${R2_SECRET_ACCESS_KEY}` —
+   Litestream expands these from the environment)
+3. Copy `deploy/litestream.env.example` to `{{BOT_DIR}}/deploy/litestream.env`, fill in the real
+   `R2_ACCESS_KEY_ID` / `R2_SECRET_ACCESS_KEY` from the R2 API token, and `chmod 600` it (this file
+   must never be committed to git)
+4. Replace `{{BOT_DIR}}` in `deploy/litestream.service` and place it at
    `/etc/systemd/system/litestream.service`
-4. Verify replication manually before turning it into a daemon:
+5. Verify replication manually before turning it into a daemon:
 
    ```bash
    # Manual check (Ctrl+C to stop)

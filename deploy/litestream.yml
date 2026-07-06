@@ -1,9 +1,10 @@
 # Litestream設定テンプレート — bot.db（aiosqlite/SQLite）をCloudflare R2へ継続レプリケーション
 #
 # 使い方:
-#   1. {{BOT_DIR}} / {{R2_BUCKET}} / {{R2_ENDPOINT}} / {{R2_ACCESS_KEY_ID}} / {{R2_SECRET_ACCESS_KEY}}
-#      を実際の値に置換する（実キーはこのファイルに直接書かず、可能ならlitestream.service側の
-#      EnvironmentFileや環境変数経由での注入も検討すること）
+#   1. {{BOT_DIR}} / {{R2_BUCKET}} / {{R2_ENDPOINT}} を実際の値に置換する
+#      （access-key-id / secret-access-key はこのファイルに直書きしない。
+#       ${R2_ACCESS_KEY_ID} / ${R2_SECRET_ACCESS_KEY} はLitestreamが環境変数から展開する。
+#       実値は deploy/litestream.env に書き、litestream.serviceのEnvironmentFileで注入する）
 #   2. {{BOT_DIR}}/deploy/litestream.yml として配置（litestream.serviceが参照するパス）
 #   3. 動作確認: litestream replicate -config {{BOT_DIR}}/deploy/litestream.yml
 #
@@ -18,8 +19,8 @@ dbs:
         path: discord-steam-bot/bot.db
         endpoint: {{R2_ENDPOINT}}
         region: auto
-        access-key-id: {{R2_ACCESS_KEY_ID}}
-        secret-access-key: {{R2_SECRET_ACCESS_KEY}}
+        access-key-id: ${R2_ACCESS_KEY_ID}
+        secret-access-key: ${R2_SECRET_ACCESS_KEY}
         # レプリケーションの同期間隔（既定10sで十分小さい。書き込み頻度が低いBotなので
         # 間隔を広げてR2へのAPIコールを減らしたい場合は調整可）
         sync-interval: 10s

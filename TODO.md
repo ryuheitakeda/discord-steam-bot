@@ -22,14 +22,16 @@
 
 ## 2. バックアップ・監視の実導入（Pi側）
 
-- [ ] **Litestream + Cloudflare R2 の実導入**
-      テンプレート（`deploy/litestream.yml` / `litestream.service`）は作成済みだが実導入の記録なし。
-      R2バケット作成 → 設定の実値化 → 常駐化。課金開始後は `bot.db`（課金状態・ユーザー紐づけ）の消失が実害になる
-- [ ] リストア訓練（README記載の手順で復元 → `PRAGMA integrity_check` 確認。定期実施）
+- [x] **Litestream + Cloudflare R2 の実導入**（2026-07-06実施）
+      R2バケット`discord-steam-bot-backup`を作成、R2 APIトークン（バケットスコープのRead/Write）を発行し
+      `deploy/litestream.env`（Pi上のみ、`chmod 600`・git管理外）に格納。`litestream.yml`は
+      `${R2_ACCESS_KEY_ID}`等の環境変数展開方式に変更（秘密情報を直書きしない）。
+      Pi(aarch64/Debian trixie)にLitestream 0.5.13を導入し、`litestream.service`を常駐化・稼働確認済み
+- [x] リストア訓練（README記載の手順で復元 → `PRAGMA integrity_check` = ok、`users`/`entitlements`等の
+      テーブル存在を確認。2026-07-06に初回実施成功。以後は定期実施すること）
 - [ ] **死活監視の導入**
       `deploy/monitoring.md` は方式提示のみで未導入。まず案A
       （healthchecks.io + systemd OnFailure + is-activeタイマー、Discord通知連携）から
-- ※ 上記2点は2026-07-06時点で「未導入」前提。Pi実機で導入済みと確認できたら消し込むこと
 
 ## 3. コード資産の保全
 
