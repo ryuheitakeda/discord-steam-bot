@@ -183,10 +183,10 @@ rm -rf /tmp/discord-steam-bot-restore-drill
 
 ## Monitoring
 
-`deploy/monitoring.md` lays out two options for liveness monitoring via healthchecks.io (systemd
-`OnFailure` notification vs. a periodic heartbeat ping from inside the bot), plus an example of
-Discord webhook notification. Start with option A (`OnFailure`, no changes to the bot itself), and
-only consider option B if you need it.
+Liveness monitoring via healthchecks.io is set up (see `deploy/monitoring.md` for details).
+`discord-steam-bot-heartbeat.timer` pings every 5 minutes while the process is alive, and
+`discord-steam-bot-notify-failure.service` fires immediately via `OnFailure` if
+`discord-steam-bot.service` crashes.
 
 ## Migrating to a different host
 

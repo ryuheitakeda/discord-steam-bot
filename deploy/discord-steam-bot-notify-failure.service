@@ -1,0 +1,15 @@
+# discord-steam-bot.serviceが失敗（クラッシュしRestart上限に達した等）した際に
+# healthchecks.ioへ「落ちた」ことを通知するoneshotユニット。
+#
+# 使い方:
+#   1. {{HEALTHCHECK_UUID}}をhealthchecks.ioで発行したCheckのping URLのUUID部分に置換する
+#   2. /etc/systemd/system/discord-steam-bot-notify-failure.service に配置
+#   3. discord-steam-bot.serviceの[Unit]セクションに OnFailure=discord-steam-bot-notify-failure.service を追記
+#   4. systemctl daemon-reload
+
+[Unit]
+Description=Notify healthchecks.io on discord-steam-bot.service failure
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/curl -fsS -m 10 --retry 3 https://hc-ping.com/{{HEALTHCHECK_UUID}}/fail

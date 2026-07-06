@@ -1,8 +1,19 @@
 # 死活監視
 
 Bot（`discord-steam-bot.service`）が落ちたこと・再起動を繰り返していることに気づけるように、
-[healthchecks.io](https://healthchecks.io/)（無料枠）へのハートビートPingを軸にした監視を提案する。
-どちらの案を採るかはコード変更を伴うため運営者側で判断すること（本ファイルは方式の提示のみ）。
+[healthchecks.io](https://healthchecks.io/)（無料枠）へのハートビートPingを軸にした監視を導入している（案Aを採用、2026-07-06）。
+
+## 導入済みの構成
+
+- healthchecks.ioにCheck「discord-steam-bot heartbeat」を作成（Period 10分 / Grace 10分）
+- `deploy/discord-steam-bot-heartbeat.service` + `.timer`：5分おきに`systemctl is-active`を確認し、
+  activeならhealthchecks.ioへping（プロセスの外形的な生存監視）
+- `deploy/discord-steam-bot-notify-failure.service`：`discord-steam-bot.service`が失敗した際に
+  `OnFailure=`経由で起動され、healthchecks.ioへ`/fail`通知（クラッシュ・Restart上限到達の即時検知）
+- 通知先: healthchecks.io側の設定でメール（`ryutek0821@gmail.com`）を有効化済み。
+  Discord Webhook連携は「Integrations」から任意タイミングで追加可能（未設定の場合はメールのみ）
+
+以下は各案の設計メモ（導入時の判断材料として残す）。
 
 healthchecks.ioでの準備:
 

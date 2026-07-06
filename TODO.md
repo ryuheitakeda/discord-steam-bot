@@ -29,9 +29,12 @@
       Pi(aarch64/Debian trixie)にLitestream 0.5.13を導入し、`litestream.service`を常駐化・稼働確認済み
 - [x] リストア訓練（README記載の手順で復元 → `PRAGMA integrity_check` = ok、`users`/`entitlements`等の
       テーブル存在を確認。2026-07-06に初回実施成功。以後は定期実施すること）
-- [ ] **死活監視の導入**
-      `deploy/monitoring.md` は方式提示のみで未導入。まず案A
-      （healthchecks.io + systemd OnFailure + is-activeタイマー、Discord通知連携）から
+- [x] **死活監視の導入**（2026-07-06実施、案A）
+      healthchecks.ioアカウント作成（マジックリンク方式、ryutek0821@gmail.com）→Check「discord-steam-bot heartbeat」
+      作成（Period/Grace 10分）。`discord-steam-bot-heartbeat.timer`（5分おきにis-active確認してping）と
+      `discord-steam-bot-notify-failure.service`（OnFailure経由でクラッシュ時に`/fail`通知）をPiに導入し稼働確認済み
+      （Last Ping更新・`/fail`手動テスト共に成功）。通知は現状メールのみ有効化済み、Discord Webhook追加は保留
+      （運営者が任意タイミングでhealthchecks.io「Integrations」から追加予定）
 
 ## 3. コード資産の保全
 

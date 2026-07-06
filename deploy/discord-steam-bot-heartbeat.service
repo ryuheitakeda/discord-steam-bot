@@ -1,0 +1,13 @@
+# discord-steam-bot.serviceがactiveである間、定期的にhealthchecks.ioへ生存Pingを送るoneshotユニット。
+# discord-steam-bot-heartbeat.timerから起動される想定（単体では手動起動以外で動かない）。
+#
+# 使い方:
+#   1. {{HEALTHCHECK_UUID}}をhealthchecks.ioで発行したCheckのping URLのUUID部分に置換する
+#   2. /etc/systemd/system/discord-steam-bot-heartbeat.service に配置
+
+[Unit]
+Description=Heartbeat ping to healthchecks.io if discord-steam-bot.service is active
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'systemctl is-active --quiet discord-steam-bot.service && curl -fsS -m 10 https://hc-ping.com/{{HEALTHCHECK_UUID}}'

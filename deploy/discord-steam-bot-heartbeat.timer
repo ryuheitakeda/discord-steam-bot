@@ -1,0 +1,16 @@
+# discord-steam-bot-heartbeat.serviceを5分おきに起動するタイマー。
+#
+# 使い方:
+#   1. /etc/systemd/system/discord-steam-bot-heartbeat.timer に配置
+#   2. systemctl daemon-reload && systemctl enable --now discord-steam-bot-heartbeat.timer
+
+[Unit]
+Description=Run discord-steam-bot-heartbeat.service every 5 minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+Unit=discord-steam-bot-heartbeat.service
+
+[Install]
+WantedBy=timers.target

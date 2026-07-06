@@ -148,7 +148,7 @@ rm -rf /tmp/discord-steam-bot-restore-drill
 
 ## 監視
 
-`deploy/monitoring.md`にhealthchecks.ioを使った死活監視の2案（systemdのOnFailure通知 / Bot内定期Ping）とDiscord Webhook通知の例をまとめています。まずは案A（OnFailure、Bot本体無改修）から導入し、必要に応じて案Bの検討を行ってください。
+healthchecks.ioを使った死活監視を導入済みです（詳細は`deploy/monitoring.md`）。`discord-steam-bot-heartbeat.timer`が5分おきに生存Pingを送り、`discord-steam-bot-notify-failure.service`が`discord-steam-bot.service`のクラッシュ時にOnFailure経由で即時通知します。
 
 ## 別ホストへの移行手順
 

@@ -22,6 +22,10 @@ Wants=network-online.target
 # Litestreamでリストア済みDBを使う運用の場合、リストア完了後に起動したいので
 # litestream.serviceを先に起動しておく想定（同時起動でも動作はするが順序を明示）
 Wants=litestream.service
+# 監視（deploy/monitoring.md 参照）: このサービスが失敗（Restart上限到達等）した際に
+# healthchecks.ioへ通知するため、discord-steam-bot-notify-failure.serviceを起動する
+# （OnFailure=は[Unit]セクションのディレクティブ。[Service]に書いても無視されるので注意）
+OnFailure=discord-steam-bot-notify-failure.service
 
 [Service]
 Type=simple
@@ -38,10 +42,6 @@ TimeoutStopSec=30
 StandardOutput=journal
 StandardError=journal
 SyslogIdentifier=discord-steam-bot
-
-# 監視（deploy/monitoring.md 参照）: このサービスが失敗（Restart上限到達等）した際に
-# 通知したい場合は OnFailure= で別ユニットを指定する運用も可能（例: OnFailure=discord-steam-bot-notify-failure.service）
-# OnFailure=discord-steam-bot-notify-failure.service
 
 # 任意の軽量サンドボックス化（環境によっては動作に影響するため、まず無効のまま導入し
 # 問題なければ有効化を検討する）
