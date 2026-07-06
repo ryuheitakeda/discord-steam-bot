@@ -33,8 +33,8 @@
 
 ## 3. コード資産の保全
 
-- [ ] **gitリモートの設定**：現状コードの置き場はMac1台（＋Piへのrsyncコピー）のみ。
-      GitHubプライベートリポジトリを作成してpush（`.env` / `bot.db` はignore済みなので安全）
+- [x] **gitリモートの設定**：GitHubプライベートリポジトリ `ryutek0821/discord-steam-bot` を作成しpush済み
+      （`.env` / `bot.db` はignore済みで含まれていないことを確認）
 - [x] `.gitignore` に `.claude/` `.serena/` を追加（現在untrackedのまま）
 
 ## 4. ドキュメントの実態合わせ
