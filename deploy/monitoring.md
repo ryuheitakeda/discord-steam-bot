@@ -1,6 +1,6 @@
 # 死活監視
 
-Bot（`steambot.service`）が落ちたこと・再起動を繰り返していることに気づけるように、
+Bot（`discord-steam-bot.service`）が落ちたこと・再起動を繰り返していることに気づけるように、
 [healthchecks.io](https://healthchecks.io/)（無料枠）へのハートビートPingを軸にした監視を提案する。
 どちらの案を採るかはコード変更を伴うため運営者側で判断すること（本ファイルは方式の提示のみ）。
 
@@ -14,31 +14,31 @@ healthchecks.ioでの準備:
 
 ## 案A: systemdのOnFailureでcurl通知
 
-`steambot.service`が失敗（クラッシュしRestart上限に達した、等）した際に、systemdのOnFailure機構で
+`discord-steam-bot.service`が失敗（クラッシュしRestart上限に達した、等）した際に、systemdのOnFailure機構で
 別ユニットを起動し、そこからcurlでPing（またはDiscord Webhook）を送る方式。Bot本体のコード変更が不要。
 
-`/etc/systemd/system/steambot-notify-failure.service` の例:
+`/etc/systemd/system/discord-steam-bot-notify-failure.service` の例:
 
 ```ini
 [Unit]
-Description=Notify on steambot.service failure
+Description=Notify on discord-steam-bot.service failure
 
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/curl -fsS -m 10 --retry 3 https://hc-ping.com/{{HEALTHCHECK_URL}}/fail
 ```
 
-`steambot.service` の `[Service]` セクションに以下を追記して紐づける:
+`discord-steam-bot.service` の `[Service]` セクションに以下を追記して紐づける:
 
 ```ini
-OnFailure=steambot-notify-failure.service
+OnFailure=discord-steam-bot-notify-failure.service
 ```
 
 これは「落ちたときだけ通知する」設計であり、healthchecks.io側の定期Pingとは別に
 Discord Webhookへ直接POSTする通知（下記参照）と組み合わせるのが分かりやすい。
 
 補足: 「起動していること」自体を定期的に確認したい場合は、Pi側にcron/systemd timerで
-`systemctl is-active --quiet steambot.service && curl -fsS -m 10 https://hc-ping.com/{{HEALTHCHECK_URL}}`
+`systemctl is-active --quiet discord-steam-bot.service && curl -fsS -m 10 https://hc-ping.com/{{HEALTHCHECK_URL}}`
 を数分おきに実行するタイマーユニットを別途組むことでも案Aと同等の効果が得られる
 （Bot自体の生存だけでなくプロセスの死活を外形的に見る形）。
 
@@ -70,12 +70,12 @@ healthchecks.ioの「Integrations」からDiscordを選び、通知先のWebhook
 Ping途絶時に自動でDiscordチャンネルへアラートが飛ぶ（healthchecks.io側の機能なので追加実装不要）。
 
 自前でDiscord Webhookに直接通知したい場合（例: 案Aのfail通知を直接Discordにも飛ばす）は、
-`steambot-notify-failure.service`のExecStartを以下のように並べるか、シェルスクリプトにまとめる:
+`discord-steam-bot-notify-failure.service`のExecStartを以下のように並べるか、シェルスクリプトにまとめる:
 
 ```bash
 curl -fsS -m 10 --retry 3 https://hc-ping.com/{{HEALTHCHECK_URL}}/fail
 curl -fsS -m 10 -H "Content-Type: application/json" \
-  -d '{"content": "⚠️ steambot.service が失敗しました（Pi）"}' \
+  -d '{"content": "⚠️ discord-steam-bot.service が失敗しました（Pi）"}' \
   {{DISCORD_WEBHOOK_URL}}
 ```
 

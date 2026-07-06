@@ -15,7 +15,7 @@ Documentation=https://litestream.io/
 After=network-online.target
 Wants=network-online.target
 # Botより先/並行して起動し、bot.dbへの書き込みを継続的にレプリケーションする
-Before=steambot.service
+Before=discord-steam-bot.service
 
 [Service]
 Type=simple

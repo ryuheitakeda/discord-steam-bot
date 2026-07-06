@@ -1,6 +1,6 @@
-# Discord × Steam VC Bot
+# 今日なんのゲームする？Bot
 
-Discordのボイスチャンネルに集まったメンバーの共通所持Steamゲームから、「今日一緒にやれるゲーム」を提案するBotです。
+Discordのボイスチャンネルに集まったメンバーの共通所持Steamゲームから、「今日一緒にやれるゲーム」を提案するBotです（旧仮称: Discord × Steam VC Bot）。
 
 ## できること
 
@@ -9,8 +9,19 @@ Discordのボイスチャンネルに集まったメンバーの共通所持Stea
 - `/profile [user]` — 紐づけ状況の確認
 - `/games [all]` — 今VCにいるメンバーの共通所持ゲームからマルチプレイ対応タイトルを上位10件表示（`all:True`で絞り込みなし）
 - `/pick [all]` — 上記の中からランダムに1本を提案
+- `/premium` — サーバーの契約状況（無料枠 / プレミアム）を確認し、プレミアムへのアップグレード導線を表示
 
 `/link` は自分のSteamプロフィールURL/IDを貼ってもらう方式です。他人のURLを貼っても紐づく先はそのURLが指す（＝貼った本人ではない）Steamアカウントになるだけで、貼った本人には何のメリットもない（＝なりすましの動機がない）ため、Discord OAuth2連携のような外部ドメインを経由する仕組みは使わず、シンプルな自己申告方式にしています。
+
+### フリーミアム制限
+
+`/games` `/pick` はサーバー単位でローリングウィンドウ制限があります（3回/日 かつ 60回/月）。プレミアム（Stripe決済 ¥380/月）に加入したサーバーは無制限になります。上限到達時は自動でアップグレード導線（Stripe Payment Link）を表示します。
+
+管理者向けにBotオーナー限定の `/grant` `/revoke`（プレミアムの手動付与・剥奪）コマンドもあります。
+
+### 多言語対応（i18n）
+
+コマンド応答はDiscordのユーザー言語設定に応じて日本語/英語を自動切り替えします（`locales/ja.json` / `locales/en.json`、`i18n.py` / `translator.py`）。
 
 ## セットアップ
 
@@ -73,16 +84,16 @@ python bot.py
    pip install -r requirements.txt
    ```
 
-2. `deploy/steambot.service`の`{{BOT_DIR}}`を実際の絶対パス（例: `/home/ryu/discord-steam-bot`）に置換し、`/etc/systemd/system/steambot.service`に配置する
+2. `deploy/discord-steam-bot.service`の`{{BOT_DIR}}`を実際の絶対パス（例: `/home/ryu/discord-steam-bot`）に置換し、`/etc/systemd/system/discord-steam-bot.service`に配置する
 3. 有効化・起動する
 
    ```bash
    sudo systemctl daemon-reload
-   sudo systemctl enable --now steambot.service
-   journalctl -u steambot -f   # ログ確認（起動ログにコマンド同期の結果が出れば準備完了）
+   sudo systemctl enable --now discord-steam-bot.service
+   journalctl -u discord-steam-bot -f   # ログ確認（起動ログにコマンド同期の結果が出れば準備完了）
    ```
 
-**注意:** Pi上で既に別のsystemdユニット名・別の起動方式でBotが稼働している可能性があります。その場合はいきなり置き換えず、既存ユニットの内容と`deploy/steambot.service`を見比べて差分を適用してください。Botのトークンは同一のため、新旧ユニットが同時に起動した状態（二重接続）にならないよう、切り替え時は旧ユニットを停止してから新ユニットを起動してください。
+**注意:** Pi上で既に別のsystemdユニット名・別の起動方式でBotが稼働している可能性があります。その場合はいきなり置き換えず、既存ユニットの内容と`deploy/discord-steam-bot.service`を見比べて差分を適用してください。Botのトークンは同一のため、新旧ユニットが同時に起動した状態（二重接続）にならないよう、切り替え時は旧ユニットを停止してから新ユニットを起動してください。
 
 Stripe Webhookを外部（Stripe）から受けられるようにするには`deploy/cloudflare-tunnel.md`の手順でCloudflare Tunnelを設定してください。
 
@@ -112,7 +123,7 @@ Pi本体の故障・SDカード破損などでbot.dbを失った場合の復元:
 
 ```bash
 litestream restore -config {{BOT_DIR}}/deploy/litestream.yml -o {{BOT_DIR}}/bot.db {{BOT_DIR}}/bot.db
-# Botを起動する前に一度停止しておくこと（steambot.serviceがbot.dbを開いたままだと復元先と競合する）
+# Botを起動する前に一度停止しておくこと（discord-steam-bot.serviceがbot.dbを開いたままだと復元先と競合する）
 ```
 
 ### リストア訓練（定期的に実施すること）
@@ -120,17 +131,17 @@ litestream restore -config {{BOT_DIR}}/deploy/litestream.yml -o {{BOT_DIR}}/bot.
 バックアップが「取れているつもり」で実際には壊れている、というのを避けるため、本番とは別のディレクトリに定期的に復元して整合性を確認する。
 
 ```bash
-mkdir -p /tmp/steambot-restore-drill
-litestream restore -config {{BOT_DIR}}/deploy/litestream.yml -o /tmp/steambot-restore-drill/bot.db {{BOT_DIR}}/bot.db
+mkdir -p /tmp/discord-steam-bot-restore-drill
+litestream restore -config {{BOT_DIR}}/deploy/litestream.yml -o /tmp/discord-steam-bot-restore-drill/bot.db {{BOT_DIR}}/bot.db
 
 # SQLite自体の整合性チェック
-sqlite3 /tmp/steambot-restore-drill/bot.db "PRAGMA integrity_check;"
+sqlite3 /tmp/discord-steam-bot-restore-drill/bot.db "PRAGMA integrity_check;"
 # "ok" が返ればOK
 
 # 主要テーブルに想定通りレコードがあるか目視確認（テーブル名はdb.pyのスキーマを参照）
-sqlite3 /tmp/steambot-restore-drill/bot.db ".tables"
+sqlite3 /tmp/discord-steam-bot-restore-drill/bot.db ".tables"
 
-rm -rf /tmp/steambot-restore-drill
+rm -rf /tmp/discord-steam-bot-restore-drill
 ```
 
 ## 監視
@@ -143,7 +154,7 @@ Raspberry Piから別のホスト（将来的なVPS移行など。候補: WebARE
 
 ```bash
 # 旧ホストでBotを一度停止（bot.dbの整合性を保つため）
-ssh old-host "sudo systemctl stop steambot litestream"
+ssh old-host "sudo systemctl stop discord-steam-bot litestream"
 
 # コード一式 + bot.db + .env を新ホストへ転送
 rsync -avz --exclude '.venv' --exclude '__pycache__' \
@@ -153,12 +164,12 @@ rsync -avz --exclude '.venv' --exclude '__pycache__' \
 ssh new-host "cd {{BOT_DIR}} && python -m venv .venv && \
   .venv/bin/pip install -r requirements.txt"
 
-# deploy/steambot.service・litestream.service・（必要ならcloudflared.service）を配置し直し
+# deploy/discord-steam-bot.service・litestream.service・（必要ならcloudflared.service）を配置し直し
 ssh new-host "sudo systemctl daemon-reload && \
-  sudo systemctl enable --now litestream.service steambot.service"
+  sudo systemctl enable --now litestream.service discord-steam-bot.service"
 
 # 旧ホストのユニットは無効化しておく
-ssh old-host "sudo systemctl disable --now steambot litestream"
+ssh old-host "sudo systemctl disable --now discord-steam-bot litestream"
 ```
 
 `bot.db`を直接rsyncする代わりに、新ホストで`litestream restore`から復元する形でも移行できます（`bot.db`のrsync時にBotが書き込み中だと不整合の恐れがあるため、Litestream運用が定着していればこちらの方が安全）。移行後は旧ホストのcloudflaredトンネル設定（該当する場合）も新ホストに付け替えることを忘れないこと。

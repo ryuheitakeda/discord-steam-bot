@@ -1,7 +1,7 @@
-# Discord x Steam VC Bot
+# 今日なんのゲームする？Bot
 
 A Discord bot that looks at the Steam games members of a voice channel own in common and suggests
-"something to play together today".
+"something to play together today". (Formerly working title: "Discord x Steam VC Bot".)
 
 *(This is an English translation of `README.md`. The Japanese version is the source of truth; if the
 two ever diverge, defer to `README.md`.)*
@@ -14,11 +14,26 @@ two ever diverge, defer to `README.md`.)*
 - `/games [all]` — Show up to the top 10 titles supporting multiplayer, taken from the common
   library of everyone currently in your voice channel (`all:True` disables the multiplayer filter)
 - `/pick [all]` — Randomly pick one title from the list above
+- `/premium` — Check the server's plan status (free / premium) and show the upgrade link
 
 `/link` works by having each member paste their own Steam profile URL/ID. If you paste someone
 else's URL, the account gets linked to *that* URL (not you) — the person who ran the command gets
 no benefit from doing so (there's no incentive to impersonate). Rather than something like a
 Discord OAuth2 account link, this is intentionally kept to a simple self-report.
+
+### Freemium limits
+
+`/games` and `/pick` are rate-limited per server on a rolling window (3/day and 60/month). Servers
+subscribed to Premium (¥380/month via Stripe) get unlimited use. When the limit is hit, the bot
+automatically shows an upgrade link (Stripe Payment Link).
+
+Bot-owner-only admin commands `/grant` and `/revoke` are also available for manually granting or
+revoking Premium.
+
+### Localization (i18n)
+
+Command responses automatically switch between Japanese and English based on each Discord user's
+locale setting (`locales/ja.json` / `locales/en.json`, `i18n.py` / `translator.py`).
 
 ## Setup
 
@@ -89,18 +104,18 @@ under `deploy/`.
    pip install -r requirements.txt
    ```
 
-2. Replace `{{BOT_DIR}}` in `deploy/steambot.service` with the actual absolute path (e.g.
-   `/home/ryu/discord-steam-bot`), then place it at `/etc/systemd/system/steambot.service`
+2. Replace `{{BOT_DIR}}` in `deploy/discord-steam-bot.service` with the actual absolute path (e.g.
+   `/home/ryu/discord-steam-bot`), then place it at `/etc/systemd/system/discord-steam-bot.service`
 3. Enable and start it:
 
    ```bash
    sudo systemctl daemon-reload
-   sudo systemctl enable --now steambot.service
-   journalctl -u steambot -f   # check logs; the startup log should show the command-sync result
+   sudo systemctl enable --now discord-steam-bot.service
+   journalctl -u discord-steam-bot -f   # check logs; the startup log should show the command-sync result
    ```
 
 **Note:** the Pi may already be running the bot under a different unit name or a different startup
-mechanism. Don't just overwrite it — diff the existing unit against `deploy/steambot.service` and
+mechanism. Don't just overwrite it — diff the existing unit against `deploy/discord-steam-bot.service` and
 apply the difference. Since the bot uses a single token, make sure the old and new units are never
 running at the same time (double-connecting the same token) — stop the old unit before starting the
 new one.
@@ -139,7 +154,7 @@ Recovering `bot.db` after, say, Pi hardware failure or SD card corruption:
 
 ```bash
 litestream restore -config {{BOT_DIR}}/deploy/litestream.yml -o {{BOT_DIR}}/bot.db {{BOT_DIR}}/bot.db
-# Make sure steambot.service is stopped first — restoring on top of a bot.db the service still has
+# Make sure discord-steam-bot.service is stopped first — restoring on top of a bot.db the service still has
 # open will conflict with it.
 ```
 
@@ -149,17 +164,17 @@ To avoid a false sense of security ("we're backing up" when the backup is actual
 periodically restore into a separate directory and verify integrity there.
 
 ```bash
-mkdir -p /tmp/steambot-restore-drill
-litestream restore -config {{BOT_DIR}}/deploy/litestream.yml -o /tmp/steambot-restore-drill/bot.db {{BOT_DIR}}/bot.db
+mkdir -p /tmp/discord-steam-bot-restore-drill
+litestream restore -config {{BOT_DIR}}/deploy/litestream.yml -o /tmp/discord-steam-bot-restore-drill/bot.db {{BOT_DIR}}/bot.db
 
 # SQLite integrity check
-sqlite3 /tmp/steambot-restore-drill/bot.db "PRAGMA integrity_check;"
+sqlite3 /tmp/discord-steam-bot-restore-drill/bot.db "PRAGMA integrity_check;"
 # Should return "ok"
 
 # Eyeball that the key tables have the expected records (see db.py for the schema/table names)
-sqlite3 /tmp/steambot-restore-drill/bot.db ".tables"
+sqlite3 /tmp/discord-steam-bot-restore-drill/bot.db ".tables"
 
-rm -rf /tmp/steambot-restore-drill
+rm -rf /tmp/discord-steam-bot-restore-drill
 ```
 
 ## Monitoring
@@ -177,7 +192,7 @@ WebARENA Indigo, Sakura's VPS, etc.), the basic procedure is: `rsync` the whole 
 
 ```bash
 # Stop the bot on the old host first (to keep bot.db consistent)
-ssh old-host "sudo systemctl stop steambot litestream"
+ssh old-host "sudo systemctl stop discord-steam-bot litestream"
 
 # Transfer the code + bot.db + .env to the new host
 rsync -avz --exclude '.venv' --exclude '__pycache__' \
@@ -187,12 +202,12 @@ rsync -avz --exclude '.venv' --exclude '__pycache__' \
 ssh new-host "cd {{BOT_DIR}} && python -m venv .venv && \
   .venv/bin/pip install -r requirements.txt"
 
-# Re-install deploy/steambot.service, litestream.service, (and cloudflared.service if applicable)
+# Re-install deploy/discord-steam-bot.service, litestream.service, (and cloudflared.service if applicable)
 ssh new-host "sudo systemctl daemon-reload && \
-  sudo systemctl enable --now litestream.service steambot.service"
+  sudo systemctl enable --now litestream.service discord-steam-bot.service"
 
 # Disable the units on the old host
-ssh old-host "sudo systemctl disable --now steambot litestream"
+ssh old-host "sudo systemctl disable --now discord-steam-bot litestream"
 ```
 
 Instead of rsyncing `bot.db` directly, you can also restore it from Litestream on the new host
