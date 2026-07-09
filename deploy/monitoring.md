@@ -100,3 +100,48 @@ curl -fsS -m 10 -H "Content-Type: application/json" \
 | 検知できる範囲 | プロセスのクラッシュ／Restart上限到達 | プロセス生存＋（設計次第で）Discord接続状態 |
 | 導入の手軽さ | 高い（今すぐ導入可能） | Bot改修のレビュー・デプロイが必要 |
 | 推奨 | まずは案Aで導入し、必要になれば案Bを追加 | — |
+
+---
+
+# Stripe Webhookログの監視（課金フローの習慣）
+
+死活監視（Botプロセスが生きているか）とは別に、Stripe課金イベントが**正しく処理されたか**を
+確認する習慣。`stripe_webhook.py`が`logging.getLogger("discord-steam-bot.stripe_webhook")`で
+出力するログは、systemdユニットの`StandardOutput=journal`設定によりjournaldに記録されるため、
+`journalctl -u discord-steam-bot`で追える。
+
+## 見るべきログメッセージ
+
+正常系（INFO）:
+- `Stripe決済完了によりプレミアムを付与しました: guild_id=... subscription_id=...`
+  （`checkout.session.completed`）
+- `Stripeサブスク解約によりプレミアムを剥奪しました: guild_id=... subscription_id=...`
+  （`customer.subscription.deleted`）
+- `Stripeサブスク更新を反映しました: guild_id=... subscription_id=... status=...`
+  （`customer.subscription.updated`）
+
+異常系（WARNING/ERROR、要調査）:
+- `Stripe Webhookの署名検証に失敗しました: ...`（WARNING）— エンドポイントURLやWebhook Secretの設定ミスを疑う
+- `対応するguildが見つかりません (subscription_id=...)`（WARNING）— DBとStripe側の紐付けがずれている
+- `Stripeイベント処理中にエラーが発生しました: event_type=...`（ERROR、`logger.exception`でtraceback付き）
+  — DB書き込み等で例外。Stripe側は自動リトライするので放置しても再送されるが、原因は必ず特定すること
+
+## 運用コマンド
+
+```bash
+# リアルタイムでWebhook関連ログのみ追う
+journalctl -u discord-steam-bot -f | grep stripe_webhook
+
+# 直近の成功ログを確認（決済があったはずのタイミングで）
+journalctl -u discord-steam-bot --since "1 hour ago" | grep -E "プレミアムを付与しました|プレミアムを剥奪しました|サブスク更新を反映しました"
+
+# 異常系だけ抽出（署名検証失敗・guild不明・例外）
+journalctl -u discord-steam-bot --since today | grep "discord-steam-bot.stripe_webhook" | grep -E "WARNING|ERROR|Traceback"
+```
+
+## 頻度の目安
+
+- **軌道に乗るまで（〜サーバー数75〜80到達前）**: Stripeダッシュボードの「支払い」または「Webhooks」タブで
+  新規イベントを見かけたら、その都度上記grepで対応するログが出ているか照合する
+- **定常運用後**: 週1回程度、`journalctl -u discord-steam-bot --since "7 days ago" | grep "discord-steam-bot.stripe_webhook" | grep -E "WARNING|ERROR"`
+  で異常系のみチェックすれば十分

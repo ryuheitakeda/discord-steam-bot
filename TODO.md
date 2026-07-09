@@ -34,7 +34,11 @@
       - サポートメールの返信先が未設定で個人Gmail（ryutek0821@gmail.com）にフォールバックしていたため`support@ryuteklabo.com`に設定
       - ついでにCheckout/Payment Linksで顧客に表示される法的URL（プライバシーポリシー・利用規約・特定商取引法表記）も未入力だったため、
         `https://ryuteklabo.com/privacy` `/terms` `/tokushoho` を設定
-- [ ] 初売上が発生した際のWebhookログ監視の習慣づけ（`journalctl -u discord-steam-bot`）
+- [x] **初売上が発生した際のWebhookログ監視の習慣づけ**（2026-07-09実施）：
+      `deploy/monitoring.md`に「Stripe Webhookログの監視」セクションを追加。
+      成功/異常系それぞれの正確なログ文言（`stripe_webhook.py`のログ出力から抽出）と、
+      `journalctl -u discord-steam-bot`でのgrepコマンド、確認頻度の目安（軌道に乗るまでは決済都度、
+      定常運用後は週1回）を明文化した
 
 ## 2. バックアップ・監視の実導入（Pi側）
 
