@@ -1,6 +1,6 @@
 # TODO — 残タスクリスト
 
-最終更新: 2026-07-06（Stripe Live mode切替当日の棚卸し）
+最終更新: 2026-07-09（Stripeメール設定確認）
 
 ## 現状（完了済み）
 
@@ -27,7 +27,13 @@
         Stripeダッシュボードから「今すぐキャンセル」を実行して検証した
       - 剥奪後、`entitlements`テーブルの該当行が削除され、Discord上の`/premium`も無料枠表示に戻ることを確認
       - 返金（¥380）もダッシュボード操作で正常に処理された
-- [ ] Stripeの顧客向けメール設定の確認（領収書の自動送信、明細に表示される事業者名「RyuTekLabo」）
+- [x] **Stripeの顧客向けメール設定の確認**（2026-07-09実施）：
+      明細表記（statement descriptor）は`RYUTEKLABO.COM`で正しく設定済みだったが、以下は未設定/意図しない状態だったため修正：
+      - 領収書の自動送信（決済成功時・返金時のメール）が**OFF**になっていたため両方ON化
+      - メール送信のデフォルト言語が「英語」になっていたため「日本語」に変更
+      - サポートメールの返信先が未設定で個人Gmail（ryutek0821@gmail.com）にフォールバックしていたため`support@ryuteklabo.com`に設定
+      - ついでにCheckout/Payment Linksで顧客に表示される法的URL（プライバシーポリシー・利用規約・特定商取引法表記）も未入力だったため、
+        `https://ryuteklabo.com/privacy` `/terms` `/tokushoho` を設定
 - [ ] 初売上が発生した際のWebhookログ監視の習慣づけ（`journalctl -u discord-steam-bot`）
 
 ## 2. バックアップ・監視の実導入（Pi側）
