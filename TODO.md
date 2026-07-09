@@ -1,6 +1,6 @@
 # TODO — 残タスクリスト
 
-最終更新: 2026-07-09（Stripeメール設定確認）
+最終更新: 2026-07-09（Discord Developer Portal設定確認）
 
 ## 現状（完了済み）
 
@@ -72,8 +72,20 @@
 
 ## 5. 公開・集客
 
-- [ ] Discord Developer PortalでPublic Bot設定と招待URL権限（`permissions=19456`）が
-      LP記載のURLと一致しているか最終確認（`deploy/cloudflare-pages.md` のチェックリスト残項目）
+- [x] **Discord Developer PortalでPublic Bot設定と招待URL権限の最終確認**（2026-07-09実施）：
+      LPのカスタム招待URL（`permissions=19456&scope=bot applications.commands`）は
+      `site/index.html`・`site/en/index.html`全ページで一致、コード上の実使用範囲
+      （チャンネルを表示・メッセージを送信・リンクを埋め込みのみ、ファイル添付/リアクション/
+      メッセージ履歴閲覧なし）とも過不足ないことを確認。公開Bot設定もON。
+      あわせて2件の不備を発見・修正：
+      - Privileged Gateway Intentsで`Presence Intent`と`Message Content Intent`がONだったが
+        コード（`bot.py`）はどちらも未使用（`Server Members Intent`のみ使用）だったため、
+        Bot Verification審査・プライバシー説明義務を減らす目的で両方OFFに変更
+      - インストールページの「デフォルトのインストール設定」（ギルドのインストール）の
+        スコープが`applications.commands`のみで`bot`スコープが欠落しており、LP経由でなく
+        Discordネイティブの「Discord提供リンク」から追加した場合にBotが正しく追加されない
+        状態だったため、`bot`スコープと権限（チャンネルを表示・メッセージを送る・
+        リンクを埋め込み＝LPと同じ19456相当）を追加
 - [ ] 集客チャネルの着手：top.gg等のBotリストサイト掲載、Discord App Directory申請の検討
 - [ ] （中期）サーバー数が増えたら100サーバー到達前にBot Verification申請（本人確認が必要）
 - [ ] `support@ryuteklabo.com` 宛て問い合わせの応答フロー決め（受信確認は済み、返信運用のみ）
